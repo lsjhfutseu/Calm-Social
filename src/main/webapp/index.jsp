@@ -39,8 +39,9 @@
        </div> 
        <button type="submit" class="btn btn-default">搜索</button> 
       </form> 
-      <li><a href="#" data-toggle="modal" data-target="#loginModal">登陆</a></li> 
-      <li><a href="#" data-toggle="modal" data-target="#registModal">注册</a></li> 
+      <li id = "loginBtn"><a href="#" data-toggle="modal" data-target="#loginModal">登陆</a></li> 
+      <li id = "registBtn"><a href="#" data-toggle="modal" data-target="#registModal">注册</a></li> 
+      <li id = "testBtn"></li>
      </ul> 
      <ul class="nav navbar-nav navbar-right"> 
       <li><a href="#">关于Calm-Social</a></li> 
@@ -203,6 +204,7 @@
 
 
 <script type="text/javascript">
+	
 	function check(form) {
 	    if(form.name.value=='') {
 	    	$("#name").attr('placeholder','登录名不能为空！');
@@ -227,7 +229,8 @@
             contentType: false,
             success: function (result) {
                 if (result.status == 200) {
-                    alert("SUCCESS");
+                	$("#testBtn").html("欢迎您,"+result.data.name);
+                	localStorage.setItem("username", result.data.name);
                 }
                 else{
                 	alert("用户不存在");
