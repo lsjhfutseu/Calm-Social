@@ -30,9 +30,9 @@ public class UserServiceImpl implements UserService {
 		}
 		User user = list.get(0);
 		if(DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
-			String token = UUID.randomUUID().toString();
+			//String token = UUID.randomUUID().toString();
 			user.setPassword("");
-			return SocialResult.ok(token);
+			return SocialResult.ok(user);
 		}
 		return SocialResult.build(400, "µÇÂ¼Ê§°Ü");
 	}
