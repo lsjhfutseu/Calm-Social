@@ -48,4 +48,19 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	/*public SocialResult checkusername (String username) {
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		if(list == null || list.size() == 0) {
+			return SocialResult.build(400, "µÇÂ¼Ê§°Ü");
+		}
+		User user = list.get(0);
+		//test
+		System.out.println(user.getPassword());
+		
+		return null;
+	}*/
+
 }

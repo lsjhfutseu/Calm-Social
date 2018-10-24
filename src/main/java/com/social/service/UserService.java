@@ -9,5 +9,7 @@ public interface UserService {
 	
 	//ÓÃ»§×¢²áservice
 	public SocialResult regist(User user);
+	
+	//public SocialResult checkusername(String username);
 }
 
