@@ -3,10 +3,14 @@ package com.social.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import com.social.commonpojo.CookieUtils;
 import com.social.commonpojo.SocialResult;
 import com.social.mapper.UserMapper;
 import com.social.pojo.User;
@@ -20,7 +24,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserMapper userMapper;
 	
-	public SocialResult login(String username, String password) {
+	public SocialResult login(String username, String password,HttpServletRequest request, HttpServletResponse response) {
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andNameEqualTo(username);
@@ -30,7 +34,11 @@ public class UserServiceImpl implements UserService {
 		}
 		User user = list.get(0);
 		if(DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
-			//String token = UUID.randomUUID().toString();
+			//存入cookie
+			String token = UUID.randomUUID().toString();
+			CookieUtils.setCookie(request, response, "test", user.getName());
+			//System.out.println(user.getName());
+			//
 			user.setPassword("");
 			return SocialResult.ok(user);
 		}
@@ -38,6 +46,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public SocialResult regist(User user) {
+		
 		user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
 		try {
 			userMapper.insert(user);
@@ -46,21 +55,9 @@ public class UserServiceImpl implements UserService {
 		catch (Exception e) {
 			return SocialResult.build(400, "新建用户错误");
 		}
+		
 	}
 
-	/*public SocialResult checkusername (String username) {
-		UserExample example = new UserExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andNameEqualTo(username);
-		List<User> list = userMapper.selectByExample(example);
-		if(list == null || list.size() == 0) {
-			return SocialResult.build(400, "登录失败");
-		}
-		User user = list.get(0);
-		//test
-		System.out.println(user.getPassword());
-		
-		return null;
-	}*/
+	
 
 }

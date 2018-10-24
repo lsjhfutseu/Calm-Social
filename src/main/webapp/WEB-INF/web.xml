@@ -54,7 +54,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>calm-social</servlet-name>
-		<!-- 伪静态化 -->
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
