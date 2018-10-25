@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 		if(DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
 			//¥Ê»Îcookie
 			String token = UUID.randomUUID().toString();
-			CookieUtils.setCookie(request, response, "test", user.getName());
+			CookieUtils.setCookie(request, response, "user", user.getName());
 			//System.out.println(user.getName());
 			//
 			user.setPassword("");

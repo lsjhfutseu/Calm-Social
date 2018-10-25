@@ -49,7 +49,8 @@
       </form> 
       <li id = "loginBtn"><a href="#" data-toggle="modal" data-target="#loginModal">登陆</a></li> 
       <li id = "registBtn"><a href="#" data-toggle="modal" data-target="#registModal">注册</a></li> 
-      <li id = "testBtn"></li>
+      <li><a id = "personalBtn" href="#" ></a></li>
+      <li id = "exitBtn"><a href="javascript:exit();">退出</a></li>
      </ul> 
      <ul class="nav navbar-nav navbar-right"> 
       <li><a href="#">关于Calm-Social</a></li> 
@@ -116,7 +117,7 @@
 		        <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>杨涵</h3>
 		    </div>
 		    <div class="panel-body">
-		        参加一波婚礼回来，有那么一瞬间想结婚了，好在有鸡儿陪我@死亡罅隙  
+		       今天参加完第十届互联网大赛，大骂马化腾，爽！
 		    </div>
 		</div>
     </div>
@@ -219,8 +220,16 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	if(null != $.cookie('test'))
-		$("#testBtn").html("欢迎您,"+ $.cookie('test'));
+		var user = $.cookie('user');
+		if(user != null){
+			$("#loginBtn").remove();
+			$("#registBtn").remove();
+			$("#personalBtn").html(user);
+		}
+		else{
+			$("#exitBtn").hide();
+		}
+		
 	});
 	
 	function check(form) {
@@ -239,53 +248,31 @@ $(document).ready(function(){
 	
 	function login() {
 		var str_data = "username="+$("#name").val()+"&userpassword="+$("#password").val();
-		//alert(str_data);
-		$.ajax({
-        //几个参数需要注意一下
-            type: "POST",//方法类型
-            dataType: "json",//预期服务器返回的数据类型
-            url: "login?" + str_data ,//url
-            contentType: false,
-            success: function (result) {
-                if (result.status == 200) {
-                	//$("#testBtn").html("欢迎您,"+result.data.name);
-                	//localStorage.setItem("username", result.data.name);
-                	//$.cookie('test', 'hhhhhhhh');
-                	alert("dengluchenggong");
-                }
-                else{
-                	alert("用户不存在");
-                }
-                ;
-            },
-            error : function() {
-                alert("异常！");
-            }
-        });
+		//post请求
+		$.post("login",$("#loginForm").serialize(), function(data){
+			if(data.status == 200){
+				//alert("登陆成功");
+			}
+		});
     }
 	
 	function regist() {
 		var str_data = "username="+$("#r_name").val()+"&userpassword="+$("#r_password").val();
-		alert(str_data);
-		$.ajax({
-        //几个参数需要注意一下
-            type: "POST",//方法类型
-            dataType: "json",//预期服务器返回的数据类型
-            url: "regist?" + str_data ,//url
-            contentType: false,
-            success: function (result) {
-                if (result.status == 200) {
-                	alert("注册成功");
-                }
-                else{
-                	alert("注册失败");
-                }
-                ;
-            },
-            error : function() {
-                alert("异常！");
-            }
-        });
+		
+		//post请求
+		$.post("regist",$("#registForm").serialize(), function(data){
+			if(data.status == 200){
+				alert("注册成功");
+			}
+			else{
+				alert("注册失败");
+			}
+		});
+	}
+	
+	function exit(){
+		$.cookie('user', '', { expires: -1 });
+		location.reload();
 	}
 	
 </script>
