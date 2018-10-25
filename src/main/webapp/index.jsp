@@ -192,7 +192,7 @@
                 <h4 class="modal-title" id="myModalLabel">注册</h4>
             </div>
             <div class="modal-body">
-            	<form class="form-horizontal" role="form" method = "post" onsubmit="return check(this);">
+            	<form class="form-horizontal" role="form" id = "registForm" method = "post" onsubmit="return check(this);">
 				  <div class="form-group">
 				    <label for="firstname" class="col-sm-3 control-label">登陆名</label>
 				    <div class="col-sm-9">
