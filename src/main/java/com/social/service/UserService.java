@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.social.commonpojo.SocialResult;
+import com.social.pojo.NewThings;
 import com.social.pojo.User;
 
 public interface UserService {
@@ -15,6 +16,10 @@ public interface UserService {
 
 	public SocialResult getNewthings(String username);
 	
-
+	public int getIdbyName(String userName);
+	
+	
+	public SocialResult postNewthings(String record,String username);
+	
 }
 

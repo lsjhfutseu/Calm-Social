@@ -27,11 +27,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserMapper userMapper;
 	@Autowired
-<<<<<<< HEAD
-	ThingsService thingsService ;
-=======
 	ThingsService thingsService;
->>>>>>> 19593c8f86429dfa8017019af1d1daf5a49352f1
 	
 	public SocialResult login(String username, String password,HttpServletRequest request, HttpServletResponse response) {
 		UserExample example = new UserExample();
@@ -42,13 +38,11 @@ public class UserServiceImpl implements UserService {
 			return SocialResult.build(400, "登录失败");
 		}
 		User user = list.get(0);
-		
-		System.out.println(user.getName());
-		
 		if(DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
 			//存入cookie
 			String token = UUID.randomUUID().toString();
 			CookieUtils.setCookie(request, response, "user", user.getName());
+			//System.out.println(user.getName());
 			//
 			user.setPassword("");
 			return SocialResult.ok(user);
@@ -69,46 +63,15 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-<<<<<<< HEAD
+
 	public SocialResult getNewthings(String username) {
-
-		//username = "20181026";
-		System.out.println(username);
 		
-		UserExample example = new UserExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andNameEqualTo(username);
-		List<User> list = userMapper.selectByExample(example);
-		int userId = list.get(0).getId();
-		System.out.println(userId);
-		
-		//int userId = 1;  //通过username获得
-		
-		//ThingsService thingsService = new ThingsServiceImpl();
-		
-		List<NewThings> ls = thingsService.getThingsByUserid(userId);
-		
-		System.out.println(ls.size());
-		
-		String[] things = new String[1];
-		
-		for(int i=0;i<things.length;i++ ) {
-			things[i]=username+"+"+ls.get(i).getContent();
-		}
-		
-		
-		return SocialResult.ok(things);
-	}
-
-	
-=======
-	public SocialResult getNewthings(String username) {	
 				UserExample example = new UserExample();
 				Criteria criteria = example.createCriteria();
 				criteria.andNameEqualTo(username);
 				List<User> list = userMapper.selectByExample(example);
-				int userId = list.get(0).getId();  //通过username获得 
 				
+				int userId = list.get(0).getId();  //通过username获得 
 				List<NewThings> ls = thingsService.getThingsByUserid(userId);
 				
 				String[] things = new String[ls.size()];
@@ -117,7 +80,38 @@ public class UserServiceImpl implements UserService {
 					things[i]=username+"+"+ls.get(i).getContent();
 				}
 				return SocialResult.ok(things);
->>>>>>> 19593c8f86429dfa8017019af1d1daf5a49352f1
 
 	}
+	
+	//根据name取id
+	public int getIdbyName(String username) {
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		int id= list.get(0).getId();
+		return id;
+	}
+
+	
+	
+	public SocialResult postNewthings(String record,String username) {
+		
+		int id= getIdbyName(username);
+		
+		
+		
+		try {
+			thingsService.postThings(record,id);
+			return SocialResult.ok();
+		}
+		catch (Exception e) {
+			return SocialResult.build(400, "新建用户错误");
+		}
+		
+	}
+
+	
+
+	
 }

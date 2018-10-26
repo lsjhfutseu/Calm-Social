@@ -219,67 +219,68 @@
 
 <script type="text/javascript">
 
-$(document).ready(function(){
-	//更新登陆状态
-	var user = $.cookie('user');
-	if(user != null){
-		$("#loginBtn").remove();
-		$("#registBtn").remove();
-		$("#personalBtn").html(user);
-	}
-	else{
-		$("#exitBtn").hide();
-	}
-//更新新鲜事
-	$.get("getnewthings", function(result){
-	    alert(result.data);
-	  });
-		
+	$(document).ready(function() {
+		//更新登陆状态
+		var user = $.cookie('user');
+		if (user != null) {
+			$("#loginBtn").remove();
+			$("#registBtn").remove();
+			$("#personalBtn").html(user);
+			//更新新鲜事
+			$.get("getnewthings", function(result) {
+				alert(result.data);
+			});
+		} else {
+			$("#exitBtn").hide();
+		}
+
 	});
-	
+
 	function check(form) {
-	    if(form.name.value=='') {
-	    	$("#name").attr('placeholder','登录名不能为空！');
-	        form.name.focus();
-	        return false;
-	     }
-	     if(form.password.value==''){
-	    	$("#password").attr('placeholder','密码不能为空！');
-	        form.password.focus();
-	        return false;
-	     }
-	      return true;
+		if (form.name.value == '') {
+			$("#name").attr('placeholder', '登录名不能为空！');
+			form.name.focus();
+			return false;
+		}
+		if (form.password.value == '') {
+			$("#password").attr('placeholder', '密码不能为空！');
+			form.password.focus();
+			return false;
+		}
+		return true;
 	}
-	
+
 	function login() {
-		var str_data = "username="+$("#name").val()+"&userpassword="+$("#password").val();
+		var str_data = "username=" + $("#name").val() + "&userpassword="
+				+ $("#password").val();
 		//post请求
-		$.post("login",$("#loginForm").serialize(), function(data){
-			if(data.status == 200){
+		$.post("login", $("#loginForm").serialize(), function(data) {
+			if (data.status == 200) {
 				//alert("登陆成功");
 			}
 		});
-    }
-	
+	}
+
 	function regist() {
-		var str_data = "username="+$("#r_name").val()+"&userpassword="+$("#r_password").val();
-		
+		var str_data = "username=" + $("#r_name").val() + "&userpassword="
+				+ $("#r_password").val();
+
 		//post请求
-		$.post("regist",$("#registForm").serialize(), function(data){
-			if(data.status == 200){
+		$.post("regist", $("#registForm").serialize(), function(data) {
+			if (data.status == 200) {
 				alert("注册成功");
-			}
-			else{
+			} else {
 				alert("注册失败");
 			}
 		});
 	}
-	
-	function exit(){
-		$.cookie('user', '', { expires: -1 });
+
+	function exit() {
+		$.cookie('user', '', {
+			expires : -1
+		});
 		location.reload();
 	}
-	
 </script>
 </body>
 </html>

@@ -44,5 +44,15 @@ public class UserController {
 		return userService.getNewthings(username);
 	}
 	
+
+	@RequestMapping("/postnewthings")
+	@ResponseBody
+	public SocialResult postnewthings(String content ,HttpServletRequest request,HttpServletResponse response) {
+		
+		String username=CookieUtils.getCookieValue(request, "user");
+		
+		return userService.postNewthings(content,username);
+		
+	}
 	
 }
