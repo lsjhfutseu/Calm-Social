@@ -81,12 +81,12 @@
     	<div class = "col-lg-10 col-sm-10 col-md-10">
 		    <form role="form">
 			  <div class="form-group">
-			    <textarea class="form-control" rows="2" placeholder = "说些什么吧"></textarea>
+			    <textarea class="form-control" rows="2" placeholder = "说些什么吧" id = "report_content"></textarea>
 			  </div>
 			</form>
 		</div>
 		<div class = "col-lg-2 col-sm-2 col-md-2">
-			<button class="btn btn-default btn-lg">发表</button> 
+			<button class="btn btn-default btn-lg" onclick = "report()">发表</button> 
 		</div>
     </div>
     <div class="row">
@@ -226,16 +226,15 @@ $(document).ready(function(){
 		$("#loginBtn").remove();
 		$("#registBtn").remove();
 		$("#personalBtn").html(user);
+		//更新个人新鲜事
+		$.get("getnewthings", function(result){
+		    alert(result.data);
+		  });
 	}
 	else{
 		$("#exitBtn").hide();
-	}
-//更新新鲜事
-	$.get("getnewthings", function(result){
-	    alert(result.data);
-	  });
-		
-	});
+	}	
+});
 	
 	function check(form) {
 	    if(form.name.value=='') {
@@ -278,6 +277,14 @@ $(document).ready(function(){
 	function exit(){
 		$.cookie('user', '', { expires: -1 });
 		location.reload();
+	}
+	
+	function report(){
+		$.post("report",{content : $("#report_content").val()}, function(data){
+			if(data.status == 200){
+				alert("发表成功");
+			}
+		});
 	}
 	
 </script>
