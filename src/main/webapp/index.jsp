@@ -81,12 +81,12 @@
     	<div class = "col-lg-10 col-sm-10 col-md-10">
 		    <form role="form">
 			  <div class="form-group">
-			    <textarea class="form-control" rows="2" placeholder = "说些什么吧"></textarea>
+			    <textarea class="form-control" rows="2" placeholder = "说些什么吧" id = "report_content"></textarea>
 			  </div>
 			</form>
 		</div>
 		<div class = "col-lg-2 col-sm-2 col-md-2">
-			<button class="btn btn-default btn-lg">发表</button> 
+			<button class="btn btn-default btn-lg" onclick = "report()">发表</button> 
 		</div>
     </div>
     <div class="row">
@@ -219,6 +219,7 @@
 
 <script type="text/javascript">
 
+<<<<<<< HEAD
 	$(document).ready(function() {
 		//更新登陆状态
 		var user = $.cookie('user');
@@ -236,6 +237,25 @@
 
 	});
 
+=======
+$(document).ready(function(){
+	//更新登陆状态
+	var user = $.cookie('user');
+	if(user != null){
+		$("#loginBtn").remove();
+		$("#registBtn").remove();
+		$("#personalBtn").html(user);
+		//更新个人新鲜事
+		$.get("getnewthings", function(result){
+		    alert(result.data);
+		  });
+	}
+	else{
+		$("#exitBtn").hide();
+	}	
+});
+	
+>>>>>>> 9c384fe2c7117eecf1a3081471ed2aa23d954ead
 	function check(form) {
 		if (form.name.value == '') {
 			$("#name").attr('placeholder', '登录名不能为空！');
@@ -281,6 +301,18 @@
 		});
 		location.reload();
 	}
+<<<<<<< HEAD
+=======
+	
+	function report(){
+		$.post("report",{content : $("#report_content").val()}, function(data){
+			if(data.status == 200){
+				alert("发表成功");
+			}
+		});
+	}
+	
+>>>>>>> 9c384fe2c7117eecf1a3081471ed2aa23d954ead
 </script>
 </body>
 </html>
