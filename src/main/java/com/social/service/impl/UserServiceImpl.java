@@ -66,20 +66,26 @@ public class UserServiceImpl implements UserService {
 
 	public SocialResult getNewthings(String username) {
 		
-				UserExample example = new UserExample();
-				Criteria criteria = example.createCriteria();
-				criteria.andNameEqualTo(username);
-				List<User> list = userMapper.selectByExample(example);
 				
-				int userId = list.get(0).getId();  //通过username获得 
-				List<NewThings> ls = thingsService.getThingsByUserid(userId);
-				
-				String[] things = new String[ls.size()];
-				
-				for(int i=0;i<things.length;i++ ) {
-					things[i]=username+"+"+ls.get(i).getContent();
-				}
-				return SocialResult.ok(things);
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		int userId = -1;
+		if(!list.isEmpty()) {
+			userId = list.get(0).getId();  //通过username获得 
+		}
+		if(userId != -1) {
+			List<NewThings> ls = thingsService.getThingsByUserid(userId);
+			
+			String[] things = new String[ls.size()];
+			
+			for(int i=0;i<things.length;i++ ) {
+				things[i]=username+"+"+ls.get(things.length - i - 1).getContent();
+			}
+			return SocialResult.ok(things);
+		}
+		return SocialResult.ok("无内容");
 
 	}
 	
@@ -89,6 +95,8 @@ public class UserServiceImpl implements UserService {
 		Criteria criteria = example.createCriteria();
 		criteria.andNameEqualTo(username);
 		List<User> list = userMapper.selectByExample(example);
+		if(list.isEmpty())
+			return -1;
 		int id= list.get(0).getId();
 		return id;
 	}
@@ -98,9 +106,8 @@ public class UserServiceImpl implements UserService {
 	public SocialResult postNewthings(String record,String username) {
 		
 		int id= getIdbyName(username);
-		//System.out.println(id);
-		
-		
+		if(id == -1)
+			return SocialResult.build(400, "未登陆");
 		try {
 			thingsService.postThings(record,id);
 			return SocialResult.ok();

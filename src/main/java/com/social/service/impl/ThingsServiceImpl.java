@@ -34,8 +34,6 @@ public class ThingsServiceImpl implements ThingsService {
 			NewThings newthings = new NewThings();
 			newthings.setContent(record);
 			newthings.setUserid(userid);
-			newThingsMapper.insert(newthings);
-		
 	}
 
 	

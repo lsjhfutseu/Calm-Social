@@ -76,7 +76,7 @@
    </div> 
   </div> 
   
-  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-md-5 col-lg-5 col-sm-5">
+  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-md-5 col-lg-5 col-sm-5" id = "newthings_show">
     <div class="row">
     	<div class = "col-lg-10 col-sm-10 col-md-10">
 		    <form role="form">
@@ -88,39 +88,8 @@
 		<div class = "col-lg-2 col-sm-2 col-md-2">
 			<button class="btn btn-default btn-lg" onclick = "report()">发表</button> 
 		</div>
-    </div>
-    <div class="row">
-    	<div class="panel panel-default">
-	    	<div class="panel-heading">
-		        <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>李世俊</h3>
-		    </div>
-		    <div class="panel-body">
-		         真的是千呼万唤始出来，院儿刚进去得到最终结果。恭喜工大锦鲤是为豌豆射手，中奖号码是1000999。(说明:工大锦鲤在开奖前换了微信名和头像，院儿已经核对过)
-另外50名幸运粉丝福利奖也已经揭晓，名单如图。请各位中奖粉丝填写小程序中的收货地址，方便之后联系送奖!
-		    </div>
-		</div>
-    </div>
-    <div class="row">
-    	<div class="panel panel-default">
-	    	<div class="panel-heading">
-		        <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>曹斌</h3>
-		    </div>
-		    <div class="panel-body">
-		         【王东司马】
-他的父亲（吴炳松）在今年9月28日查出患有脑胶质瘤，目前已经经过几次大型的手术和化疗，但巨额的治疗费用让原本普通的家庭陷入了绝境。希望大家能够多多支持和转发，相信大家每一次的帮助和转发都是对他们家庭莫大的支持和鼓舞，最后希望他的父亲能够早日康复!
-		    </div>
-		</div>
-    </div>
-    <div class="row">
-    	<div class="panel panel-default">
-	    	<div class="panel-heading">
-		        <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>杨涵</h3>
-		    </div>
-		    <div class="panel-body">
-		       今天参加完第十届互联网大赛，大骂马化腾，爽！
-		    </div>
-		</div>
-    </div>
+</div>
+    
   </div> 
   
   <div class = "col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-sm-3 colcol-md-3 col-lg-3">
@@ -159,7 +128,8 @@
 				  <div class="form-group">
 				    <label for="lastname" class="col-sm-3 control-label">密码</label>
 				    <div class="col-sm-9">
-				      <input type="text" class="form-control" name = "userpassword" id="password" placeholder="请输入密码">
+				
+				      <input  class="form-control" type="password" name = "userpassword" id="password" placeholder="请输入密码">
 				    </div>
 				  </div>
 				  <div class="form-group">
@@ -202,7 +172,8 @@
 				  <div class="form-group">
 				    <label for="lastname" class="col-sm-3 control-label">密码</label>
 				    <div class="col-sm-9">
-				      <input type="text" class="form-control" name = "userpassword" id="r_password" placeholder="请输入密码">
+				    
+				      <input class="form-control" type="password" name = "userpassword" id="r_password" placeholder="请输入密码">
 				    </div>
 				  </div>
 				  <div class="form-group">
@@ -220,25 +191,34 @@
 <script type="text/javascript">
 
 
+	$(document).ready(function() {
+		//更新登陆状态
+		var user = $.cookie('user');
+		if (user != null) {
+			$("#loginBtn").remove();
+			$("#registBtn").remove();
+			$("#personalBtn").html(user);
+			//更新新鲜事
+			$.get("getnewthings", function(result) {
+				//展示新鲜事
+				for(var i = 0; i < result.data.length; i++){
+					var eachThing = result.data[i].split("+");
+					var footer = "";
+					if(eachThing[0] == user){  //如果为当前用户新鲜事则增加删除功能
+						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-8"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="#" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
+					}else{  //否则不允许删除
+						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-9"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
+					}
+					$("#newthings_show").append(
+					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3></div>'
+				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
+				}
+			});
+		} else {
+			$("#exitBtn").hide();
+		}
 
 
-$(document).ready(function(){
-	//更新登陆状态
-	var user = $.cookie('user');
-	if(user != null){
-		$("#loginBtn").remove();
-		$("#registBtn").remove();
-		$("#personalBtn").html(user);
-		//更新个人新鲜事
-		$.get("getnewthings", function(result){
-		    alert(result.data);
-		  });
-	}
-	else{
-		$("#exitBtn").hide();
-	}	
-});
-	
 	function check(form) {
 		if (form.name.value == '') {
 			$("#name").attr('placeholder', '登录名不能为空！');
@@ -284,17 +264,16 @@ $(document).ready(function(){
 		});
 		location.reload();
 	}
-
 	
 	function report(){
 		$.post("report",{content : $("#report_content").val()}, function(data){
 			if(data.status == 200){
-				alert("发表成功");
+				//alert("发表成功");
+				location.reload();
 			}
 		});
 	}
 	
-
 </script>
 </body>
 </html>
