@@ -45,7 +45,7 @@ public class UserController {
 	}
 	
 
-	@RequestMapping("/postnewthings")
+	@RequestMapping("/report")
 	@ResponseBody
 	public SocialResult postnewthings(String content ,HttpServletRequest request,HttpServletResponse response) {
 		
