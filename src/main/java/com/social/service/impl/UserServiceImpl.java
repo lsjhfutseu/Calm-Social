@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
 
 	public SocialResult getNewthings(String username) {
 		
+				
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andNameEqualTo(username);
