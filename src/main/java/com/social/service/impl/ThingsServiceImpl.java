@@ -25,7 +25,7 @@ public class ThingsServiceImpl implements ThingsService {
 		Criteria criteria = example.createCriteria();
 		criteria.andUseridEqualTo(userId);
 		List<NewThings> list = newThingsMapper.selectByExample(example);
-		System.out.println(list.size());
+		//System.out.println(list.size());
 		
 		return list;
 	}

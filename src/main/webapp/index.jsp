@@ -219,25 +219,9 @@
 
 <script type="text/javascript">
 
-<<<<<<< HEAD
-	$(document).ready(function() {
-		//更新登陆状态
-		var user = $.cookie('user');
-		if (user != null) {
-			$("#loginBtn").remove();
-			$("#registBtn").remove();
-			$("#personalBtn").html(user);
-			//更新新鲜事
-			$.get("getnewthings", function(result) {
-				alert(result.data);
-			});
-		} else {
-			$("#exitBtn").hide();
-		}
 
-	});
 
-=======
+
 $(document).ready(function(){
 	//更新登陆状态
 	var user = $.cookie('user');
@@ -255,7 +239,6 @@ $(document).ready(function(){
 	}	
 });
 	
->>>>>>> 9c384fe2c7117eecf1a3081471ed2aa23d954ead
 	function check(form) {
 		if (form.name.value == '') {
 			$("#name").attr('placeholder', '登录名不能为空！');
@@ -301,8 +284,7 @@ $(document).ready(function(){
 		});
 		location.reload();
 	}
-<<<<<<< HEAD
-=======
+
 	
 	function report(){
 		$.post("report",{content : $("#report_content").val()}, function(data){
@@ -312,7 +294,7 @@ $(document).ready(function(){
 		});
 	}
 	
->>>>>>> 9c384fe2c7117eecf1a3081471ed2aa23d954ead
+
 </script>
 </body>
 </html>

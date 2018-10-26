@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 	public SocialResult postNewthings(String record,String username) {
 		
 		int id= getIdbyName(username);
-		
+		//System.out.println(id);
 		
 		
 		try {
