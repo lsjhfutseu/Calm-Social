@@ -167,7 +167,37 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-	
+	public SocialResult addFriend(String username, String friendname) {
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		if(list.isEmpty())
+			return SocialResult.build(400, "请先登录");
+		User user = list.get(0);
+		
+		//获得朋友的ID
+		int friendId = getIdbyName(friendname);
+		if(friendId == -1)
+			return SocialResult.build(400, "查无此人");
+		String[] friends = user.getFriend().split(",");
+		for(int i = 0; i < friends.length; ++i) {
+			if(Integer.valueOf(friends[i]) == friendId) {
+				return SocialResult.build(444, "不可重复添加好友");
+			}
+		}
+		user.setFriend(user.getFriend() + "," + friendId);
+		userMapper.updateByExample(user, example);
+		return SocialResult.ok();
+	}
 
+	public SocialResult searchFriend(String username) {
+		int id= getIdbyName(username);
+		if(id == -1)
+			return SocialResult.build(400, "查无此人");
+		else 
+			return SocialResult.ok(username);
+	}
+	
 	
 }
