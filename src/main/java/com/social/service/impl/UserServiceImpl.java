@@ -18,6 +18,7 @@ import com.social.pojo.NewThings;
 import com.social.pojo.User;
 import com.social.pojo.UserExample;
 import com.social.pojo.UserExample.Criteria;
+import com.social.service.ThingsService;
 import com.social.service.UserService;
 
 @Service
@@ -25,6 +26,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserMapper userMapper;
+	@Autowired
+	ThingsService thingsService;
 	
 	public SocialResult login(String username, String password,HttpServletRequest request, HttpServletResponse response) {
 		UserExample example = new UserExample();
@@ -60,23 +63,21 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-	public SocialResult getNewthings(String username) {
-		int userId = 1;  //通过username获得
-		
-		ThingsServiceImpl thingsService = new ThingsServiceImpl();
-		List<NewThings> ls = thingsService.getThingsByUserid(userId);
-		
-		
-		String[] things = new String[1];
-		
-		for(int i=0;i<things.length;i++ ) {
-			things[i]=username+ls.get(i).getContent();
-		}
-		
-		
-		return SocialResult.ok(things.length);
+	public SocialResult getNewthings(String username) {	
+				UserExample example = new UserExample();
+				Criteria criteria = example.createCriteria();
+				criteria.andNameEqualTo(username);
+				List<User> list = userMapper.selectByExample(example);
+				int userId = list.get(0).getId();  //通过username获得 
+				
+				List<NewThings> ls = thingsService.getThingsByUserid(userId);
+				
+				String[] things = new String[ls.size()];
+				
+				for(int i=0;i<things.length;i++ ) {
+					things[i]=username+"+"+ls.get(i).getContent();
+				}
+				return SocialResult.ok(things);
+
 	}
-
-	
-
 }
