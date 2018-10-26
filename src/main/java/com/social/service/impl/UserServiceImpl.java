@@ -18,6 +18,7 @@ import com.social.pojo.NewThings;
 import com.social.pojo.User;
 import com.social.pojo.UserExample;
 import com.social.pojo.UserExample.Criteria;
+import com.social.service.ThingsService;
 import com.social.service.UserService;
 
 @Service
@@ -25,6 +26,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserMapper userMapper;
+	@Autowired
+<<<<<<< HEAD
+	ThingsService thingsService ;
+=======
+	ThingsService thingsService;
+>>>>>>> 19593c8f86429dfa8017019af1d1daf5a49352f1
 	
 	public SocialResult login(String username, String password,HttpServletRequest request, HttpServletResponse response) {
 		UserExample example = new UserExample();
@@ -35,11 +42,13 @@ public class UserServiceImpl implements UserService {
 			return SocialResult.build(400, "登录失败");
 		}
 		User user = list.get(0);
+		
+		System.out.println(user.getName());
+		
 		if(DigestUtils.md5DigestAsHex(password.getBytes()).equals(user.getPassword())) {
 			//存入cookie
 			String token = UUID.randomUUID().toString();
 			CookieUtils.setCookie(request, response, "user", user.getName());
-			//System.out.println(user.getName());
 			//
 			user.setPassword("");
 			return SocialResult.ok(user);
@@ -60,23 +69,55 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+<<<<<<< HEAD
 	public SocialResult getNewthings(String username) {
-		int userId = 1;  //通过username获得
+
+		//username = "20181026";
+		System.out.println(username);
 		
-		ThingsServiceImpl thingsService = new ThingsServiceImpl();
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		int userId = list.get(0).getId();
+		System.out.println(userId);
+		
+		//int userId = 1;  //通过username获得
+		
+		//ThingsService thingsService = new ThingsServiceImpl();
+		
 		List<NewThings> ls = thingsService.getThingsByUserid(userId);
 		
+		System.out.println(ls.size());
 		
 		String[] things = new String[1];
 		
 		for(int i=0;i<things.length;i++ ) {
-			things[i]=username+ls.get(i).getContent();
+			things[i]=username+"+"+ls.get(i).getContent();
 		}
 		
 		
-		return SocialResult.ok(things.length);
+		return SocialResult.ok(things);
 	}
 
 	
+=======
+	public SocialResult getNewthings(String username) {	
+				UserExample example = new UserExample();
+				Criteria criteria = example.createCriteria();
+				criteria.andNameEqualTo(username);
+				List<User> list = userMapper.selectByExample(example);
+				int userId = list.get(0).getId();  //通过username获得 
+				
+				List<NewThings> ls = thingsService.getThingsByUserid(userId);
+				
+				String[] things = new String[ls.size()];
+				
+				for(int i=0;i<things.length;i++ ) {
+					things[i]=username+"+"+ls.get(i).getContent();
+				}
+				return SocialResult.ok(things);
+>>>>>>> 19593c8f86429dfa8017019af1d1daf5a49352f1
 
+	}
 }

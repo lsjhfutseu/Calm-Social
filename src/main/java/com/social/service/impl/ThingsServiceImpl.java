@@ -18,12 +18,13 @@ public class ThingsServiceImpl implements ThingsService {
 	NewThingsMapper newThingsMapper;
 	
 	public List<NewThings> getThingsByUserid(int userId) {
+		
 		NewThingsExample example = new NewThingsExample();
 		
 		Criteria criteria = example.createCriteria();
-		criteria.andIdEqualTo(userId);
+		criteria.andUseridEqualTo(userId);
 		List<NewThings> list = newThingsMapper.selectByExample(example);
-		
+		System.out.println(list.size());
 		
 		return list;
 	}
