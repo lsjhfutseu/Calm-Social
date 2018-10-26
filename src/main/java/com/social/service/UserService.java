@@ -18,6 +18,7 @@ public interface UserService {
 	
 	public int getIdbyName(String userName);
 	
+	public String getNameById(int userid);
 	
 	public SocialResult postNewthings(String record,String username);
 	
