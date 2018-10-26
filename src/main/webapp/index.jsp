@@ -69,9 +69,9 @@
    <ul class="list-group">
 	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-user"></span>个人中心</a> </li>
 	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>新鲜事儿</a> </li>
-	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-film"></span>我的相册</a>  </li>
-	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-user"></span>与我相关</a> </li>
-	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-film"></span>那年今日</a> </li>
+	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-film"></span>我的相册</a></li>
+	  <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#addFriendsModal"><span class="glyphicon glyphicon-user"></span>搜寻好友</a></li>
+	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-film"></span>那年今日</a></li>
 	</ul> 
    </div> 
   </div> 
@@ -185,6 +185,31 @@
     </div><!-- /.modal -->
 </div>
 
+<!-- 添加好友模态框（Modal） -->
+<div class="modal fade" id="addFriendsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">搜寻好友</h4>
+            </div>
+            <div class="modal-body" id = "addFriendBody">
+            	<form class="form-horizontal" role="form" id = "addFriendsForm" onsubmit="return check(this);">
+				  <div class="form-group">
+				    <label for="firstname" class="col-sm-3 control-label">用户名</label>
+				    <div class="col-sm-6">
+				      <input type="text" class="form-control" name = "username" id="friend_name" placeholder="请输入用户名">
+				    </div>
+				    <div class="col-sm-2">
+				      <button class="btn btn-default" onclick="searchFriends()">搜索</button>
+				    </div>
+				  </div>
+				</form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 
 <script type="text/javascript">
 
@@ -270,6 +295,29 @@
 			}
 		});
 	}
+	
+	function searchFriends(){
+		$.get("search_friend?username="+$("#friend_name").val(), function(data){
+			if(data.status == 200){
+				$("#addFriendBody").append(
+				  '<div class = "col-sm-offset-2">'+data.data+ '<button class = "btn btn-default col-sm-offset-1" onclick = "addFriend('+data.data+')">添加</button></div>'
+				)
+			}
+			else{
+				$("#friend_name").attr('placeholder', '查无此好友！');
+				$("#friend_name").focus();
+			}
+		});
+	}
+	
+	function addFriend(friendname){
+		$.post("addFriend",{username : freindname}, function(data){
+			if(data.status == 200){
+				alert("添加成功");
+			}
+		});
+	}
+
 </script>
 </body>
 </html>
