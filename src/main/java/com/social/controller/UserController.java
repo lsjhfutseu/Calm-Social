@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.social.commonpojo.CookieUtils;
 import com.social.commonpojo.SocialResult;
 import com.social.pojo.User;
 import com.social.service.UserService;
@@ -32,4 +33,16 @@ public class UserController {
 			HttpServletResponse response) {
 		return userService.login(username, userpassword, request, response);
 	}
+	
+	@RequestMapping("/getnewthings")
+	@ResponseBody
+	public SocialResult newthings( HttpServletRequest request,HttpServletResponse response) {
+		//
+		String username=CookieUtils.getCookieValue(request, "user");
+		
+		
+		return userService.getNewthings(username);
+	}
+	
+	
 }

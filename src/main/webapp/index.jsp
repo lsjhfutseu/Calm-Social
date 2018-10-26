@@ -220,15 +220,20 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-		var user = $.cookie('user');
-		if(user != null){
-			$("#loginBtn").remove();
-			$("#registBtn").remove();
-			$("#personalBtn").html(user);
-		}
-		else{
-			$("#exitBtn").hide();
-		}
+	//更新登陆状态
+	var user = $.cookie('user');
+	if(user != null){
+		$("#loginBtn").remove();
+		$("#registBtn").remove();
+		$("#personalBtn").html(user);
+	}
+	else{
+		$("#exitBtn").hide();
+	}
+//更新新鲜事
+	$.get("getnewthings", function(result){
+	    alert(result.data);
+	  });
 		
 	});
 	

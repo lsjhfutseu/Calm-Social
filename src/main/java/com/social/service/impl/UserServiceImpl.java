@@ -12,7 +12,9 @@ import org.springframework.util.DigestUtils;
 
 import com.social.commonpojo.CookieUtils;
 import com.social.commonpojo.SocialResult;
+import com.social.mapper.NewThingsMapper;
 import com.social.mapper.UserMapper;
+import com.social.pojo.NewThings;
 import com.social.pojo.User;
 import com.social.pojo.UserExample;
 import com.social.pojo.UserExample.Criteria;
@@ -56,6 +58,23 @@ public class UserServiceImpl implements UserService {
 			return SocialResult.build(400, "新建用户错误");
 		}
 		
+	}
+
+	public SocialResult getNewthings(String username) {
+		int userId = 1;  //通过username获得
+		
+		ThingsServiceImpl thingsService = new ThingsServiceImpl();
+		List<NewThings> ls = thingsService.getThingsByUserid(userId);
+		
+		
+		String[] things = new String[1];
+		
+		for(int i=0;i<things.length;i++ ) {
+			things[i]=username+ls.get(i).getContent();
+		}
+		
+		
+		return SocialResult.ok(things.length);
 	}
 
 	

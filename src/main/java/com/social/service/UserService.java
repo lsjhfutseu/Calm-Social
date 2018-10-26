@@ -12,6 +12,8 @@ public interface UserService {
 	
 	//ÓÃ»§×¢²áservice
 	public SocialResult regist(User user);
+
+	public SocialResult getNewthings(String username);
 	
 
 }

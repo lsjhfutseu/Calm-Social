@@ -5,6 +5,8 @@ public class NewThings {
 
     private String content;
 
+    private Integer userid;
+
     public Integer getId() {
         return id;
     }
@@ -19,5 +21,13 @@ public class NewThings {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public Integer getUserid() {
+        return userid;
+    }
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 }
