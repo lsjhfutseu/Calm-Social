@@ -55,4 +55,22 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping("/search_friend")
+	@ResponseBody
+	public SocialResult searchFriend(String username ,HttpServletRequest request,HttpServletResponse response) {
+		
+		return userService.searchFriend(username);
+		
+	}
+	
+	@RequestMapping("/addFriend")
+	@ResponseBody
+	public SocialResult addFriend(String friendname ,HttpServletRequest request,HttpServletResponse response) {
+		
+		String username=CookieUtils.getCookieValue(request, "user");
+		
+		return userService.addFriend(username, friendname);
+		
+	}
+	
 }

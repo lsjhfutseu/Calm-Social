@@ -201,7 +201,7 @@
 				      <input type="text" class="form-control" name = "username" id="friend_name" placeholder="请输入用户名">
 				    </div>
 				    <div class="col-sm-2">
-				      <button class="btn btn-default" onclick="searchFriends()">搜索</button>
+				      <button class="btn btn-default" type="button" onclick="searchFriends()">搜索</button>
 				    </div>
 				  </div>
 				</form>
@@ -300,7 +300,7 @@
 		$.get("search_friend?username="+$("#friend_name").val(), function(data){
 			if(data.status == 200){
 				$("#addFriendBody").append(
-				  '<div class = "col-sm-offset-2">'+data.data+ '<button class = "btn btn-default col-sm-offset-1" onclick = "addFriend('+data.data+')">添加</button></div>'
+				  '<div class = "col-sm-offset-2">'+data.data+ '<button class = "btn btn-default col-sm-offset-1" onclick = "addFriend()">添加</button></div>'
 				)
 			}
 			else{
@@ -310,10 +310,16 @@
 		});
 	}
 	
-	function addFriend(friendname){
-		$.post("addFriend",{username : freindname}, function(data){
+	function addFriend(){
+		var friend_name = $("#friend_name").val(); 
+		$.post("addFriend",{friendname : friend_name}, function(data){
 			if(data.status == 200){
 				alert("添加成功");
+				location.reload();
+			}
+			else if(data.status == 444){
+				alert("不允许重复添加好友");
+				location.reload();
 			}
 		});
 	}

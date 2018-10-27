@@ -18,8 +18,12 @@ public interface UserService {
 	
 	public int getIdbyName(String userName);
 	
+	public String getNameById(int userid);
 	
 	public SocialResult postNewthings(String record,String username);
+	
+	public SocialResult addFriend(String username, String friendname);
+	public SocialResult searchFriend(String username);
 	
 }
 
