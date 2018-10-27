@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 		String[] friendsId=null; //好友id
 		if(!list.isEmpty()) {
 			userId = list.get(0).getId();  //通过username获得 
-			if(list.get(0).getFriend() !=null)
+			if(list.get(0).getFriend() !=null && !"".equals(list.get(0).getFriend()))
 				friendsId= list.get(0).getFriend().split(",");
 		}
 		
@@ -184,7 +184,7 @@ public class UserServiceImpl implements UserService {
 		if(friendId == -1)
 			return SocialResult.build(400, "查无此人");
 		String[] friends = null;
-		if(user.getFriend() != null) {
+		if(user.getFriend() != null && !"".equals(user.getFriend())) {
 			friends = user.getFriend().split(",");
 		}
 		for(int i = 0; friends != null && i < friends.length; ++i) {
@@ -192,12 +192,31 @@ public class UserServiceImpl implements UserService {
 				return SocialResult.build(444, "不可重复添加好友");
 			}
 		}
-		if(friends == null) {   //如果之前没好友
-			user.setFriend(friendId+"");
-		}else {
-			user.setFriend(user.getFriend() + "," + friendId);
+		
+		//往被添加的好友的请求里加数据
+		UserExample example1 = new UserExample();
+		Criteria criteria1 = example1.createCriteria();
+		criteria1.andNameEqualTo(friendname);
+		List<User> friendList = userMapper.selectByExample(example1);
+		User friendUser = friendList.get(0);
+		
+		String[] friendRequests = null;
+		if(friendUser.getFriendRequest() != null && !"".equals(friendUser.getFriendRequest())) {
+			friendRequests = friendUser.getFriendRequest().split(",");
+			for(int i = 0; i < friendRequests.length; i++) {  //判断是否重复申请
+				if(Integer.valueOf(friendRequests[i]) == user.getId()) {
+					return SocialResult.build(444, "不可重复添加好友");
+				}
+			}
 		}
-		userMapper.updateByPrimaryKey(user);
+		
+		if(friendRequests == null) {   //如果之前没好友请求
+			friendUser.setFriendRequest(user.getId()+"");
+		}
+		else {
+			friendUser.setFriendRequest(friendUser.getFriendRequest() + "," + user.getId());
+		}
+		userMapper.updateByPrimaryKey(friendUser);
 		return SocialResult.ok();
 	}
 
@@ -207,6 +226,101 @@ public class UserServiceImpl implements UserService {
 			return SocialResult.build(400, "查无此人");
 		else 
 			return SocialResult.ok(username);
+	}
+
+	public SocialResult agreeAddFriend(String username, String friendname) {
+		//首先加入自己的fiend里
+		if(username == friendname)
+			return SocialResult.build(445, "不可添加自己为好友");
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		if(list.isEmpty())
+			return SocialResult.build(400, "请先登录");
+		User user = list.get(0);
+		int friendId = getIdbyName(friendname);
+		String[] friends = null;
+		if(user.getFriend() != null && !"".equals(user.getFriend())) {
+			friends = user.getFriend().split(",");
+		}
+		for(int i = 0; friends != null && i < friends.length; ++i) {
+			if("".equals(friends[i]))
+				continue;
+			if(Integer.valueOf(friends[i]) == friendId) {
+				return SocialResult.build(444, "不可重复添加好友");
+			}
+		}
+		//处理好友请求str
+		String afterFriendRequset = user.getFriendRequest();
+		if(user.getFriendRequest().indexOf(friendId+"") == 0 && !user.getFriendRequest().contains(",")) {
+			//说明只有一个请求
+			afterFriendRequset = user.getFriendRequest().replace(friendId+"", "");  //接受后新的好友请求
+		}else if(user.getFriendRequest().indexOf(friendId+"") == 0) {
+			//说明是第一个请求,且不止一个请求
+			afterFriendRequset = user.getFriendRequest().replace(friendId+",", "");  //接受后新的好友请求
+		}
+		else {
+			afterFriendRequset = user.getFriendRequest().replace(","+friendId, "");  //接受后新的好友请求
+		}
+		
+		user.setFriendRequest(afterFriendRequset);
+		
+		if(friends == null) {  //原先无朋友
+			user.setFriend(friendId+"");
+		}else {
+			user.setFriend(user.getFriend()+","+friendId);
+		}
+		userMapper.updateByPrimaryKey(user);
+		
+		
+		
+		//再处理朋友的friend
+		UserExample example1 = new UserExample();
+		Criteria criteria1 = example1.createCriteria();
+		criteria1.andNameEqualTo(friendname);
+		List<User> friendList = userMapper.selectByExample(example1);
+		User friendUser = friendList.get(0);
+		
+		String[] friend_friends = null;
+		if(friendUser.getFriend() != null && !"".equals(friendUser.getFriend())) {
+			friend_friends = friendUser.getFriend().split(",");
+		}
+		for(int i = 0; friend_friends != null && i < friend_friends.length; ++i) {
+			if(Integer.valueOf(friend_friends[i]) == user.getId()) {
+				return SocialResult.build(444, "不可重复添加好友");
+			}
+		}
+		
+		if(friend_friends == null) {  //原先无朋友
+			friendUser.setFriend(user.getId()+"");
+		}else {
+			friendUser.setFriend(friendUser.getFriend()+","+user.getId());
+		}
+		userMapper.updateByPrimaryKey(friendUser);
+		
+		
+		return SocialResult.ok(friendname);
+	}
+
+	//查询好友请求，返回name数组
+	public SocialResult getFriendsRequest(String username) {
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		if(list.isEmpty())
+			return SocialResult.build(400, "请先登录");
+		User user = list.get(0);
+		String[] name = null;
+		if(user.getFriendRequest() != null && !"".equals(user.getFriendRequest())) {  //如果好友请求不为空
+			String[] id = user.getFriendRequest().split(",");
+			name = new String[id.length];
+			for(int i = 0; i < id.length; ++i) {
+				name[i] = getNameById(Integer.valueOf(id[i]));
+			}
+		}
+		return SocialResult.ok(name);
 	}
 	
 	

@@ -443,6 +443,76 @@ public class UserExample {
             addCriterion("things not between", value1, value2, "things");
             return (Criteria) this;
         }
+
+        public Criteria andFriendRequestIsNull() {
+            addCriterion("friend_request is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestIsNotNull() {
+            addCriterion("friend_request is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestEqualTo(String value) {
+            addCriterion("friend_request =", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestNotEqualTo(String value) {
+            addCriterion("friend_request <>", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestGreaterThan(String value) {
+            addCriterion("friend_request >", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestGreaterThanOrEqualTo(String value) {
+            addCriterion("friend_request >=", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestLessThan(String value) {
+            addCriterion("friend_request <", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestLessThanOrEqualTo(String value) {
+            addCriterion("friend_request <=", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestLike(String value) {
+            addCriterion("friend_request like", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestNotLike(String value) {
+            addCriterion("friend_request not like", value, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestIn(List<String> values) {
+            addCriterion("friend_request in", values, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestNotIn(List<String> values) {
+            addCriterion("friend_request not in", values, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestBetween(String value1, String value2) {
+            addCriterion("friend_request between", value1, value2, "friendRequest");
+            return (Criteria) this;
+        }
+
+        public Criteria andFriendRequestNotBetween(String value1, String value2) {
+            addCriterion("friend_request not between", value1, value2, "friendRequest");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
