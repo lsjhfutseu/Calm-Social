@@ -210,6 +210,25 @@
     </div><!-- /.modal -->
 </div>
 
+<!-- 删除确定模态框（Modal） -->
+<div class="modal fade" id="deleteSureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">删除确认</h4>
+            </div>
+            <div class="modal-body" id = "addFriendBody">
+            	<p>此操作不可恢复，确定删除该条动态吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id = "deleteSure" onclick="sureToDelete()">删除</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 
 <script type="text/javascript">
 
@@ -227,12 +246,12 @@
 					var eachThing = result.data[i].split("+");
 					var footer = "";
 					if(eachThing[0] == user){  //如果为当前用户新鲜事则增加删除功能
-						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-8"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="#" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
+						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-8"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
 					}else{  //否则不允许删除
-						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-9"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
+						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-10"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
 					}
 					$("#newthings_show").append(
-					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3></div>'
+					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3>&nbsp;'+eachThing[2]+'</div>'
 				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
 				}
 			});
@@ -297,11 +316,10 @@
 	}
 	
 	function searchFriends(){
-		$.get("search_friend?username="+$("#friend_name").val(), function(data){
+		$.post("search_friend",{username: $("#friend_name").val()}, function(data){
 			if(data.status == 200){
-				$("#addFriendBody").append(
-				  '<div class = "col-sm-offset-2">'+data.data+ '<button class = "btn btn-default col-sm-offset-1" onclick = "addFriend()">添加</button></div>'
-				)
+				var str = '<div class = "col-sm-offset-2">'+data.data+ '<button class = "btn btn-default col-sm-offset-1" onclick = "addFriend(\''+data.data+'\')">添加</button></div>';
+				$("#addFriendBody").append(str);
 			}
 			else{
 				$("#friend_name").attr('placeholder', '查无此好友！');
@@ -310,8 +328,7 @@
 		});
 	}
 	
-	function addFriend(){
-		var friend_name = $("#friend_name").val(); 
+	function addFriend(friend_name){
 		$.post("addFriend",{friendname : friend_name}, function(data){
 			if(data.status == 200){
 				alert("添加成功");
@@ -321,8 +338,30 @@
 				alert("不允许重复添加好友");
 				location.reload();
 			}
+			else if(data.status == 445){
+				alert("不可添加自己为好友");
+				location.reload();
+			}
 		});
 	}
+	
+	//删除id为id的新鲜事
+	var thing_id = -1;
+	function deleteThing(id){
+		$('#deleteSureModal').modal('show');
+		thing_id = id;
+	}
+	
+	function sureToDelete(){
+		if(thing_id != -1){
+			$.post("deleteThing",{thingId : thing_id}, function(data){
+				if(data.status == 200){
+					location.reload();
+				}
+			});
+		}
+		thing_id = -1;
+	};
 
 </script>
 </body>

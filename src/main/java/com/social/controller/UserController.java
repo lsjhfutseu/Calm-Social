@@ -38,7 +38,7 @@ public class UserController {
 	@ResponseBody
 	public SocialResult newthings( HttpServletRequest request,HttpServletResponse response) {
 		//
-		String username=CookieUtils.getCookieValue(request, "user");
+		String username=CookieUtils.getCookieValue(request, "user", true);//true×ªÂë
 		
 		
 		return userService.getNewthings(username);
@@ -49,7 +49,7 @@ public class UserController {
 	@ResponseBody
 	public SocialResult postnewthings(String content ,HttpServletRequest request,HttpServletResponse response) {
 		
-		String username=CookieUtils.getCookieValue(request, "user");
+		String username=CookieUtils.getCookieValue(request, "user",true);  //true×ªÂë
 		
 		return userService.postNewthings(content,username);
 		
@@ -67,7 +67,7 @@ public class UserController {
 	@ResponseBody
 	public SocialResult addFriend(String friendname ,HttpServletRequest request,HttpServletResponse response) {
 		
-		String username=CookieUtils.getCookieValue(request, "user");
+		String username=CookieUtils.getCookieValue(request, "user",true);  //true×ªÂë
 		
 		return userService.addFriend(username, friendname);
 		
