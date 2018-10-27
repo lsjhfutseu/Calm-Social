@@ -11,6 +11,8 @@ public class User {
 
     private String things;
 
+    private String friendRequest;
+
     public Integer getId() {
         return id;
     }
@@ -49,5 +51,13 @@ public class User {
 
     public void setThings(String things) {
         this.things = things == null ? null : things.trim();
+    }
+
+    public String getFriendRequest() {
+        return friendRequest;
+    }
+
+    public void setFriendRequest(String friendRequest) {
+        this.friendRequest = friendRequest == null ? null : friendRequest.trim();
     }
 }

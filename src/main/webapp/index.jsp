@@ -71,7 +71,7 @@
 	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>新鲜事儿</a> </li>
 	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-film"></span>我的相册</a></li>
 	  <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#addFriendsModal"><span class="glyphicon glyphicon-user"></span>搜寻好友</a></li>
-	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-film"></span>那年今日</a></li>
+	  <li class="list-group-item"><a href="javascript:showFriendRequest()"><span class="glyphicon glyphicon-film"></span>好友请求</a></li>
 	</ul> 
    </div> 
   </div> 
@@ -210,7 +210,7 @@
     </div><!-- /.modal -->
 </div>
 
-<!-- 删除确定模态框（Modal） -->
+<!-- 删除动态确定模态框（Modal） -->
 <div class="modal fade" id="deleteSureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width:350px;">
         <div class="modal-content">
@@ -224,6 +224,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-danger" id = "deleteSure" onclick="sureToDelete()">删除</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 好友请求模态框（Modal） -->
+<div class="modal fade" id="friendRequestModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:350px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">好友请求</h4>
+            </div>
+            <div class="modal-body" id = "friendRequestBody" style = "margin-left:60px;">
+            	
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -331,7 +349,7 @@
 	function addFriend(friend_name){
 		$.post("addFriend",{friendname : friend_name}, function(data){
 			if(data.status == 200){
-				alert("添加成功");
+				alert("请求已发送");
 				location.reload();
 			}
 			else if(data.status == 444){
@@ -341,6 +359,31 @@
 			else if(data.status == 445){
 				alert("不可添加自己为好友");
 				location.reload();
+			}
+		});
+	}
+	
+	//同意添加好友
+	function agreeAddFriend(friend_name){
+		$.post("agreeAddFriend",{friendname : friend_name}, function(data){
+			if(data.status == 200){
+				//更新friendlist
+				var success = false;
+				$('#friendRequestList tr').each(function(i){                   // 遍历 tr
+					var count = 0;
+				      $(this).children('td').each(function(j){  // 遍历 tr 的各个 td
+				         if(count == 1){
+				        	 $(this).html("<button class = 'btn btn-default col-md-offset-8' disabled='disabled')>已同意</button></td>");
+				        	 success = true;
+				        	 return false;
+				         }
+				         if($(this).text() == data.data){
+				        	 count++;
+				         }
+				      });
+					if(success)
+						return false;
+				   });
 			}
 		});
 	}
@@ -362,7 +405,22 @@
 		}
 		thing_id = -1;
 	};
-
+	
+	function showFriendRequest(){
+		$("#friendRequestBody").val("");
+		//获取好友请求
+		$.get("getFriendsRequest", function(result) {
+			if(result.data != null){  //如果好友请求不是空
+				var str = "<table border='0' id = 'friendRequestList' style='border-collapse:separate;border-spacing:0px 5px;'>";	
+				for(var i = 0; i < result.data.length; ++i){
+					str += '<tr><td>'+result.data[i]+ '</td><td><button class = "btn btn-default col-md-offset-8" onclick = "agreeAddFriend(\''+result.data[i]+'\')">同意添加</button></td></tr>';
+				}
+				str += "</table>";
+				$("#friendRequestBody").append(str);
+				$("#friendRequestModal").modal("show");
+			}
+		});
+	}
 </script>
 </body>
 </html>

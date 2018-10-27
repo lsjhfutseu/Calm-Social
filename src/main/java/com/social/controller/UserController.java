@@ -73,4 +73,23 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping("/agreeAddFriend")
+	@ResponseBody
+	public SocialResult agreeAddFriend(String friendname ,HttpServletRequest request,HttpServletResponse response) {
+		
+		String username=CookieUtils.getCookieValue(request, "user",true);  //true×ªÂë
+		
+		return userService.agreeAddFriend(username, friendname);
+		
+	}
+	
+	@RequestMapping("/getFriendsRequest")
+	@ResponseBody
+	public SocialResult getFriendsRequest(HttpServletRequest request,HttpServletResponse response) {
+		
+		String username=CookieUtils.getCookieValue(request, "user",true);  //true×ªÂë
+		
+		return userService.getFriendsRequest(username);
+		
+	}
 }

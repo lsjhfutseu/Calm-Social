@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.social.mapper.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.social.pojo.User" >
+<mapper namespace="com.social.mapper.NewThingsMapper" >
+  <resultMap id="BaseResultMap" type="com.social.pojo.NewThings" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="friend" property="friend" jdbcType="VARCHAR" />
-    <result column="things" property="things" jdbcType="VARCHAR" />
-    <result column="friend_request" property="friendRequest" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="postTime" property="posttime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -38,6 +36,7 @@
       </foreach>
     </where>
   </sql>
+  
   <sql id="Update_By_Example_Where_Clause" >
     <where >
       <foreach collection="example.oredCriteria" item="criteria" separator="or" >
@@ -68,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, password, friend, things, friend_request
+    id, content, userid, postTime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.social.pojo.UserExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.social.pojo.NewThingsExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user
+    from new_things
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,96 +86,76 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from user
+    from new_things
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from user
+    delete from new_things
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.social.pojo.UserExample" >
-    delete from user
+  <delete id="deleteByExample" parameterType="com.social.pojo.NewThingsExample" >
+    delete from new_things
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.social.pojo.User" >
-    insert into user (id, name, password, 
-      friend, things, friend_request
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{friend,jdbcType=VARCHAR}, #{things,jdbcType=VARCHAR}, #{friendRequest,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.social.pojo.NewThings" >
+    insert into new_things (id, content, userid, 
+      postTime)
+    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{posttime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.social.pojo.User" >
-    insert into user
+  <insert id="insertSelective" parameterType="com.social.pojo.NewThings" >
+    insert into new_things
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="content != null" >
+        content,
       </if>
-      <if test="password != null" >
-        password,
+      <if test="userid != null" >
+        userid,
       </if>
-      <if test="friend != null" >
-        friend,
-      </if>
-      <if test="things != null" >
-        things,
-      </if>
-      <if test="friendRequest != null" >
-        friend_request,
+      <if test="posttime != null" >
+        postTime,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
       </if>
-      <if test="friend != null" >
-        #{friend,jdbcType=VARCHAR},
-      </if>
-      <if test="things != null" >
-        #{things,jdbcType=VARCHAR},
-      </if>
-      <if test="friendRequest != null" >
-        #{friendRequest,jdbcType=VARCHAR},
+      <if test="posttime != null" >
+        #{posttime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.social.pojo.UserExample" resultType="java.lang.Integer" >
-    select count(*) from user
+  <select id="countByExample" parameterType="com.social.pojo.NewThingsExample" resultType="java.lang.Integer" >
+    select count(*) from new_things
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update user
+    update new_things
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null" >
-        password = #{record.password,jdbcType=VARCHAR},
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=INTEGER},
       </if>
-      <if test="record.friend != null" >
-        friend = #{record.friend,jdbcType=VARCHAR},
-      </if>
-      <if test="record.things != null" >
-        things = #{record.things,jdbcType=VARCHAR},
-      </if>
-      <if test="record.friendRequest != null" >
-        friend_request = #{record.friendRequest,jdbcType=VARCHAR},
+      <if test="record.posttime != null" >
+        postTime = #{record.posttime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -184,45 +163,35 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update user
+    update new_things
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      friend = #{record.friend,jdbcType=VARCHAR},
-      things = #{record.things,jdbcType=VARCHAR},
-      friend_request = #{record.friendRequest,jdbcType=VARCHAR}
+      content = #{record.content,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=INTEGER},
+      postTime = #{record.posttime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.social.pojo.User" >
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="com.social.pojo.NewThings" >
+    update new_things
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
       </if>
-      <if test="friend != null" >
-        friend = #{friend,jdbcType=VARCHAR},
-      </if>
-      <if test="things != null" >
-        things = #{things,jdbcType=VARCHAR},
-      </if>
-      <if test="friendRequest != null" >
-        friend_request = #{friendRequest,jdbcType=VARCHAR},
+      <if test="posttime != null" >
+        postTime = #{posttime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.social.pojo.User" >
-    update user
-    set name = #{name,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      friend = #{friend,jdbcType=VARCHAR},
-      things = #{things,jdbcType=VARCHAR},
-      friend_request = #{friendRequest,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.social.pojo.NewThings" >
+    update new_things
+    set content = #{content,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=INTEGER},
+      postTime = #{posttime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
