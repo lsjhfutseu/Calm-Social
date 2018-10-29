@@ -23,6 +23,13 @@
 		.modal-dialog {  
 	   		margin: 200px auto;  
 		}  
+		.img{
+			width: auto;
+			height: auto;
+			max-width: 100%;
+			max-height: 100%;	
+		}
+		
 	</style>
 	
 </head>
@@ -88,12 +95,13 @@
 		<div class = "col-lg-2 col-sm-2 col-md-2">
 			<button class="btn btn-default btn-lg" onclick = "report()">发表</button> 
 		</div>
+		<img id = "bg" alt="" src="images/bg.png">
 </div>
     
   </div> 
   
   <div class = "col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-sm-3 colcol-md-3 col-lg-3">
-	<div class="panel panel-default">
+	<div id = "asker" class="panel panel-default">
 	    <div class="panel-heading">
 	        <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3>
 	    </div>
@@ -104,6 +112,7 @@
 		    </table>
 	    </div>
 	</div>
+	<img id= "bg_r" alt="" src="images/bg_r.jpg">
   </div>
   
  </div> 
@@ -253,6 +262,7 @@
 	$(document).ready(function() {
 		//更新登陆状态
 		var user = $.cookie('user');
+		//alert(user);
 		if (user != null) {
 			$("#loginBtn").remove();
 			$("#registBtn").remove();
@@ -273,8 +283,12 @@
 				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
 				}
 			});
+			
+			$("#bg_r").hide();
+			$("#bg").hide();
 		} else {
 			$("#exitBtn").hide();
+			$("#asker").hide();
 		}
 
 	});
@@ -294,28 +308,33 @@
 	}
 
 	function login() {
-		var str_data = "username=" + $("#name").val() + "&userpassword="
-				+ $("#password").val();
-		//post请求
-		$.post("login", $("#loginForm").serialize(), function(data) {
-			if (data.status == 200) {
-				//alert("登陆成功");
-			}
-		});
+			$.ajax({
+				type : "POST",  //提交方式
+				url : "login",//路径
+				data : $("#loginForm").serialize(),//数据，这里使用的是Json格式进行传输
+				async: false,
+				success : function(result) {//返回数据根据结果进行相应的处理
+					//alert(result.data+"登陆成功");//成功了
+				},
+			 	error:function(e){  
+				 	alert("出错");
+    			}  
+		    });
 	}
 
 	function regist() {
-		var str_data = "username=" + $("#r_name").val() + "&userpassword="
-				+ $("#r_password").val();
-
-		//post请求
-		$.post("regist", $("#registForm").serialize(), function(data) {
-			if (data.status == 200) {
-				alert("注册成功");
-			} else {
-				alert("注册失败");
-			}
-		});
+		$.ajax({
+			type : "POST",  //提交方式
+			url : "regist",//路径
+			data : $("#registForm").serialize(),//数据，这里使用的是Json格式进行传输
+			async: false,
+			success : function(result) {//返回数据根据结果进行相应的处理
+				//成功了
+			},
+		 	error:function(e){  
+			 	alert("出错");
+			}  
+	    });
 	}
 
 	function exit() {

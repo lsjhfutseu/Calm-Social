@@ -47,10 +47,13 @@ public class UserServiceImpl implements UserService {
 			//´æÈëcookie
 			String token = UUID.randomUUID().toString();
 			CookieUtils.setCookie(request, response, "user", user.getName(), true);
-			//System.out.println(user.getName());
-			//
 			user.setPassword("");
-			return SocialResult.ok(user);
+			try {
+				return SocialResult.ok(username);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		return SocialResult.build(400, "µÇÂ¼Ê§°Ü");
 	}
