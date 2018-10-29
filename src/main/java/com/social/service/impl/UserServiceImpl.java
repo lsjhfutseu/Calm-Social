@@ -47,16 +47,29 @@ public class UserServiceImpl implements UserService {
 			//存入cookie
 			String token = UUID.randomUUID().toString();
 			CookieUtils.setCookie(request, response, "user", user.getName(), true);
-			//System.out.println(user.getName());
-			//
 			user.setPassword("");
-			return SocialResult.ok(user);
+			try {
+				return SocialResult.ok(username);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		return SocialResult.build(400, "登录失败");
 	}
 
 	public SocialResult regist(User user) {
+		//校验
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(user.getName());
+		List<User> list = userMapper.selectByExample(example);
 		
+		if(list.size() != 0) {
+			return SocialResult.build(411, "新建用户错误");
+		}
+		
+		//注册
 		user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
 		try {
 			userMapper.insert(user);
