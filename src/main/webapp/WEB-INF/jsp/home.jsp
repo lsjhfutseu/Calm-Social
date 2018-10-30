@@ -7,13 +7,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-	
-	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery.cookie.js"></script>
-    
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 	
@@ -46,18 +44,14 @@
      <a class="navbar-brand" href="#">Calm-Social</a> 
     </div> 
     <!-- Collect the nav links, forms, and other content for toggling --> 
-    <div class="collapse navbar-collapse" id=""> 
-     <ul class="nav navbar-nav"> 
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
+     <ul class="nav navbar-nav" id = "navbar_id"> 
       <form class="navbar-form navbar-left"> 
        <div class="form-group"> 
         <input type="text" class="form-control" placeholder="Search" /> 
        </div> 
        <button type="submit" class="btn btn-default">搜索</button> 
       </form> 
-      <li id = "loginBtn"><a href="#" data-toggle="modal" data-target="#loginModal">登陆</a></li> 
-      <li id = "registBtn"><a href="#" data-toggle="modal" data-target="#registModal">注册</a></li> 
-      <li><a id = "personalBtn" href="#" ></a></li>
-      <li id = "exitBtn"><a href="javascript:exit();">退出</a></li>
      </ul> 
      <ul class="nav navbar-nav navbar-right"> 
       <li><a href="#">关于Calm-Social</a></li> 
@@ -95,24 +89,12 @@
 		<div class = "col-lg-2 col-sm-2 col-md-2">
 			<button class="btn btn-default btn-lg" onclick = "report()">发表</button> 
 		</div>
-		<img id = "bg" alt="" src="images/bg.png">
 </div>
     
   </div> 
   
-  <div class = "col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-sm-3 colcol-md-3 col-lg-3">
-	<div id = "asker" class="panel panel-default">
-	    <div class="panel-heading">
-	        <h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3>
-	    </div>
-	    <div class="panel-body">
-	        <table class="table">
-		        <tr><td>刘炳璋</td><td>曹斌</td><td>杨涵</td><td>王五</td></tr>
-		        <tr><td>张三</td><td>李四</td><td>王二麻子</td></tr>
-		    </table>
-	    </div>
-	</div>
-	<img id= "bg_r" alt="" src="images/bg_r.jpg">
+  <div id = "body_r" class = "col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-sm-3 colcol-md-3 col-lg-3">
+	
   </div>
   
  </div> 
@@ -129,19 +111,19 @@
             <div class="modal-body">
             	<form class="form-horizontal" id = "loginForm" role="form" method = "post" onsubmit="return check(this)">
 				  <div class="form-group">
-				    <label for="firstname" class="col-sm-3 control-label">登陆名</label>
-				    <div class="col-sm-9">
+				    <label for="firstname" class="col-sm-3 col-md-3 col-lg-3 control-label">登陆名</label>
+				    <div class="col-sm-9 col-md-9 col-lg-9">
 				      <input type="text" class="form-control" name = "username" id="name" placeholder="请输入登录名">
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label for="lastname" class="col-sm-3 control-label">密码</label>
-				    <div class="col-sm-9">
+				    <label for="lastname" class="col-sm-3 col-md-3 col-lg-3 control-label">密码</label>
+				    <div class="col-sm-9 col-md-9 col-lg-9">
 				      <input  class="form-control" type="password" name = "userpassword" id="password" placeholder="请输入密码">
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <div class="col-sm-offset-2 col-sm-6">
+				    <div class="col-sm-offset-2 col-md-offset-2 col-lg-offset-2 col-sm-6 col-md-6 col-lg-6">
 				      <div class="checkbox">
 				        <label>
 				          <input type="checkbox">请记住我
@@ -150,7 +132,7 @@
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <div class="col-sm-offset-1 col-sm-10">
+				    <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-sm-10 col-md-10 col-lg-10">
 				      <button type="submit" class="btn btn-default btn-block" onclick="login()">登录</button>
 				    </div>
 				  </div>
@@ -172,19 +154,19 @@
             <div class="modal-body">
             	<form class="form-horizontal" role="form" id = "registForm" method = "post" onsubmit="return check(this);">
 				  <div class="form-group">
-				    <label for="firstname" class="col-sm-3 control-label">登陆名</label>
-				    <div class="col-sm-9">
+				    <label for="firstname" class="col-sm-3 col-md-3 col-lg-3 control-label">登陆名</label>
+				    <div class="col-sm-9 col-md-9 col-lg-9">
 				      <input type="text" class="form-control" name = "username" id="r_name" placeholder="请输入登录名">
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <label for="lastname" class="col-sm-3 control-label">密码</label>
-				    <div class="col-sm-9">
+				    <label for="lastname" class="col-sm-3 col-md-3 col-lg-3 control-label">密码</label>
+				    <div class="col-sm-9 col-md-9 col-lg-9">
 				      <input class="form-control" type="password" name = "userpassword" id="r_password" placeholder="请输入密码">
 				    </div>
 				  </div>
 				  <div class="form-group">
-				    <div class="col-sm-offset-1 col-sm-10">
+				    <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-sm-10 col-md-10 col-lg-10">
 				      <input type="submit" class="btn btn-default btn-block" onclick="regist()" value = "注册"/>
 				    </div>
 				  </div>
@@ -205,11 +187,11 @@
             <div class="modal-body" id = "addFriendBody">
             	<form class="form-horizontal" role="form" id = "addFriendsForm" onsubmit="return check(this);">
 				  <div class="form-group">
-				    <label for="firstname" class="col-sm-3 control-label">用户名</label>
-				    <div class="col-sm-6">
+				    <label for="firstname" class="col-sm-3 col-md-3 col-lg-3 control-label">用户名</label>
+				    <div class="col-sm-6 col-md-6 col-lg-6">
 				      <input type="text" class="form-control" name = "username" id="friend_name" placeholder="请输入用户名">
 				    </div>
-				    <div class="col-sm-2">
+				    <div class="col-sm-2 col-md-2 col-lg-2">
 				      <button class="btn btn-default" type="button" onclick="searchFriends()">搜索</button>
 				    </div>
 				  </div>
@@ -263,9 +245,8 @@
 		//更新登陆状态
 		var user = $.cookie('user');
 		//alert(user);
-		if (user != null) {
-			$("#loginBtn").remove();
-			$("#registBtn").remove();
+		if (user != null && user !='') {
+			$("#navbar_id").append('<li><a id = "personalBtn" href="#" ></a></li><li id = "exitBtn"><a href="javascript:exit();">退出</a></li>');
 			$("#personalBtn").html(user);
 			//更新新鲜事
 			$.get("getnewthings", function(result) {
@@ -283,12 +264,11 @@
 				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
 				}
 			});
-			
-			$("#bg_r").hide();
-			$("#bg").hide();
+			$("#body_r").append('<div id = "asker" class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3></div><div class="panel-body"><table class="table"><tr><td>刘炳璋</td><td>曹斌</td><td>杨涵</td><td>王五</td></tr><tr><td>张三</td><td>李四</td><td>王二麻子</td></tr></table></div></div>');
 		} else {
-			$("#exitBtn").hide();
-			$("#asker").hide();
+			$("#body_r").append('<img id= "bg_r" alt="" src="images/bg_r.jpg">');
+			$("#newthings_show").append('<img id = "bg" alt="" src="images/bg.png">');
+			$("#navbar_id").append('<li id = "loginBtn"><a href="#" data-toggle="modal" data-target="#loginModal">登陆</a></li><li id = "registBtn"><a href="#" data-toggle="modal" data-target="#registModal">注册</a></li>');
 		}
 
 	});
@@ -314,7 +294,7 @@
 				data : $("#loginForm").serialize(),//数据，这里使用的是Json格式进行传输
 				async: false,
 				success : function(result) {//返回数据根据结果进行相应的处理
-					//alert(result.data+"登陆成功");//成功了
+					//成功了
 				},
 			 	error:function(e){  
 				 	alert("出错");
@@ -340,8 +320,10 @@
 	}
 
 	function exit() {
-		$.cookie('user', '', {
-			expires : -1
+		$.cookie('user','',{
+		    expires:-1,  
+		    path:'/',
+		    domain:document.domain,
 		});
 		location.reload();
 	}
