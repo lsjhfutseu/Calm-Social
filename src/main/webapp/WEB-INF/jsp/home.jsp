@@ -32,11 +32,11 @@
 	
 </head>
 
-<body>
+<body background="images/home_bg.jpg" style="background-repeat:no-repeat; background-size:cover;">
 
 <div class="container"> 
  <div class="row"> 
-  <nav class="navbar navbar-default" style="background-color: #e3f2fd;"> 
+  <nav class="navbar navbar-default" style = "background-color:#CDBA96;border:0px;" > 
    <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display --> 
     <div class="navbar-header"> 
@@ -65,7 +65,7 @@
  
  <div class="row"> 
  
-  <div class="col-sm-2 col-md-2 col-lg-2" style = "text-align:center;"> 
+  <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2" style = "text-align:center;"> 
    <div class="row">
    <ul class="list-group">
 	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-user"></span>个人中心</a> </li>
@@ -77,7 +77,7 @@
    </div> 
   </div> 
   
-  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-md-5 col-lg-5 col-sm-5" id = "newthings_show">
+  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-offset-1 col-xs-5 col-md-5 col-lg-5 col-sm-9" id = "newthings_show">
     <div class="row">
     	<div class = "col-lg-10 col-sm-10 col-md-10">
 		    <form role="form">
@@ -86,7 +86,7 @@
 			  </div>
 			</form>
 		</div>
-		<div class = "col-lg-2 col-sm-2 col-md-2">
+		<div class = "col-xs-2 col-lg-2 col-sm-2 col-md-2">
 			<button class="btn btn-default btn-lg" onclick = "report()">发表</button> 
 		</div>
 </div>
@@ -98,82 +98,6 @@
   </div>
   
  </div> 
-</div>
-	
-<!-- 登陆模态框（Modal） -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:350px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">登陆</h4>
-            </div>
-            <div class="modal-body">
-            	<form class="form-horizontal" id = "loginForm" role="form" method = "post" onsubmit="return check(this)">
-				  <div class="form-group">
-				    <label for="firstname" class="col-sm-3 col-md-3 col-lg-3 control-label">登陆名</label>
-				    <div class="col-sm-9 col-md-9 col-lg-9">
-				      <input type="text" class="form-control" name = "username" id="name" placeholder="请输入登录名">
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    <label for="lastname" class="col-sm-3 col-md-3 col-lg-3 control-label">密码</label>
-				    <div class="col-sm-9 col-md-9 col-lg-9">
-				      <input  class="form-control" type="password" name = "userpassword" id="password" placeholder="请输入密码">
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    <div class="col-sm-offset-2 col-md-offset-2 col-lg-offset-2 col-sm-6 col-md-6 col-lg-6">
-				      <div class="checkbox">
-				        <label>
-				          <input type="checkbox">请记住我
-				        </label>
-				      </div>
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-sm-10 col-md-10 col-lg-10">
-				      <button type="submit" class="btn btn-default btn-block" onclick="login()">登录</button>
-				    </div>
-				  </div>
-				</form>
-            </div>
-            
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
-
-<!-- 注册模态框（Modal） -->
-<div class="modal fade" id="registModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:350px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">注册</h4>
-            </div>
-            <div class="modal-body">
-            	<form class="form-horizontal" role="form" id = "registForm" method = "post" onsubmit="return check(this);">
-				  <div class="form-group">
-				    <label for="firstname" class="col-sm-3 col-md-3 col-lg-3 control-label">登陆名</label>
-				    <div class="col-sm-9 col-md-9 col-lg-9">
-				      <input type="text" class="form-control" name = "username" id="r_name" placeholder="请输入登录名">
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    <label for="lastname" class="col-sm-3 col-md-3 col-lg-3 control-label">密码</label>
-				    <div class="col-sm-9 col-md-9 col-lg-9">
-				      <input class="form-control" type="password" name = "userpassword" id="r_password" placeholder="请输入密码">
-				    </div>
-				  </div>
-				  <div class="form-group">
-				    <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-sm-10 col-md-10 col-lg-10">
-				      <input type="submit" class="btn btn-default btn-block" onclick="regist()" value = "注册"/>
-				    </div>
-				  </div>
-				</form>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
 </div>
 
 <!-- 添加好友模态框（Modal） -->
@@ -254,21 +178,20 @@
 				for(var i = 0; i < result.data.length; i++){
 					var eachThing = result.data[i].split("+");
 					var footer = "";
+					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = "report_content"></textarea></div></form>';
 					if(eachThing[0] == user){  //如果为当前用户新鲜事则增加删除功能
-						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-8"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
+						footer = '<div class="panel-footer">'+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href= "javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-8 col-md-offset-8 col-sm-offset-8 col-xs-offset-5"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
 					}else{  //否则不允许删除
-						footer = '<div class="panel-footer"><a href="#" class = "col-lg-offset-10"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
+						footer = '<div class="panel-footer">'+collapse_input+'<a href="javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-7"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
 					}
 					$("#newthings_show").append(
 					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3>&nbsp;'+eachThing[2]+'</div>'
 				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
 				}
 			});
-			$("#body_r").append('<div id = "asker" class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3></div><div class="panel-body"><table class="table"><tr><td>刘炳璋</td><td>曹斌</td><td>杨涵</td><td>王五</td></tr><tr><td>张三</td><td>李四</td><td>王二麻子</td></tr></table></div></div>');
+			$("#body_r").append('<div id = "asker" class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3></div><div class="panel-body"><table class="table" style = "border:0px"><tr><td>刘炳璋</td><td>曹斌</td><td>杨涵</td><td>王五</td></tr><tr><td>张三</td><td>李四</td><td>王二麻子</td></tr></table></div></div>');
 		} else {
-			$("#body_r").append('<img id= "bg_r" alt="" src="images/bg_r.jpg">');
-			$("#newthings_show").append('<img id = "bg" alt="" src="images/bg.png">');
-			$("#navbar_id").append('<li id = "loginBtn"><a href="#" data-toggle="modal" data-target="#loginModal">登陆</a></li><li id = "registBtn"><a href="#" data-toggle="modal" data-target="#registModal">注册</a></li>');
+			
 		}
 
 	});
@@ -325,7 +248,8 @@
 		    path:'/',
 		    domain:document.domain,
 		});
-		location.reload();
+		//进入首页
+		location.href = "${pageContext.request.contextPath}/MyLogin";
 	}
 	
 	function report(){
@@ -414,7 +338,7 @@
 		//获取好友请求
 		$.get("getFriendsRequest", function(result) {
 			if(result.data != null){  //如果好友请求不是空
-				var str = "<table border='0' id = 'friendRequestList' style='border-collapse:separate;border-spacing:0px 5px;'>";	
+				var str = "<table border='0' id = 'friendRequestList' style='border-collapse:separate;border-spacing:0px 5px;'>";
 				for(var i = 0; i < result.data.length; ++i){
 					str += '<tr><td>'+result.data[i]+ '</td><td><button class = "btn btn-default col-md-offset-8" onclick = "agreeAddFriend(\''+result.data[i]+'\')">同意添加</button></td></tr>';
 				}
@@ -423,6 +347,29 @@
 				$("#friendRequestModal").modal("show");
 			}
 		});
+	}
+	
+	function commentThing(id){
+		if($("#"+ id + "comment_btn").text() == "评论"){
+			$("#"+ id + "comment").collapse();
+			$("#"+ id + "comment_btn").text("发表")
+		}
+		if($("#"+ id + "comment_btn").text() == "发表"){
+			$.ajax({
+				type : "POST",  //提交方式
+				url : "saveComment",//路径
+				data : {thingId:id, comment:$("#"+ id + "comment").val(), beCommented:''},//数据，这里使用的是Json格式进行传输
+				success : function(result) {//返回数据根据结果进行相应的处理
+					if(result.status == 200){
+						
+						$("#"+ id + "comment").collapse();
+					}
+				},
+			 	error:function(e){  
+				 	alert("出错");
+				}  
+		    });
+		}
 	}
 </script>
 </body>
