@@ -27,6 +27,8 @@ public interface UserService {
 	
 	public SocialResult agreeAddFriend(String username, String friendname);
 	
+	public SocialResult rejectAddFriend(String username, String friendname);
+	
 	public SocialResult getFriendsRequest(String username);
 	
 }

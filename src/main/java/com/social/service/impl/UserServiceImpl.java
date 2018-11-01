@@ -242,7 +242,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public SocialResult agreeAddFriend(String username, String friendname) {
-		//首先加入自己的fiend里
+		//首先加入自己的friend里
 		if(username == friendname)
 			return SocialResult.build(445, "不可添加自己为好友");
 		UserExample example = new UserExample();
@@ -266,6 +266,7 @@ public class UserServiceImpl implements UserService {
 		}
 		//处理好友请求str
 		String afterFriendRequset = user.getFriendRequest();
+		
 		if(user.getFriendRequest().indexOf(friendId+"") == 0 && !user.getFriendRequest().contains(",")) {
 			//说明只有一个请求
 			afterFriendRequset = user.getFriendRequest().replace(friendId+"", "");  //接受后新的好友请求
@@ -335,6 +336,52 @@ public class UserServiceImpl implements UserService {
 		}
 		return SocialResult.ok(name);
 	}
+
+	public SocialResult rejectAddFriend(String username, String friendname) {
+		//查找username对象
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(username);
+		List<User> list = userMapper.selectByExample(example);
+		if(list.isEmpty()) {
+			return SocialResult.build(400, "用户名无注册");
+		}
+		User user = list.get(0);
+		
+		//查找friendname对象
+		UserExample example1 = new UserExample();
+		Criteria criteria1 = example1.createCriteria();
+		criteria1.andNameEqualTo(friendname);
+		List<User> friendList = userMapper.selectByExample(example1);
+		if(friendList.isEmpty()) {
+			return SocialResult.build(400, "有毛个申请的朋友");
+		}
+		int friendId = friendList.get(0).getId();
+		
+		//删除
+		String FriendRequset = user.getFriendRequest();
+		if(!FriendRequset.contains(friendId+"")) {
+			return SocialResult.build(400, "有毛申请的朋友");
+		}
+		
+
+		if (user.getFriendRequest().indexOf(friendId + "") == 0 && !user.getFriendRequest().contains(",")) {
+			// 说明只有一个请求
+			FriendRequset = user.getFriendRequest().replace(friendId + "", ""); // 接受后新的好友请求
+		} else if (user.getFriendRequest().indexOf(friendId + "") == 0) {
+			// 说明是第一个请求,且不止一个请求
+			FriendRequset = user.getFriendRequest().replace(friendId + ",", ""); // 接受后新的好友请求
+		} else {
+			FriendRequset = user.getFriendRequest().replace("," + friendId, ""); // 接受后新的好友请求
+		}
+
+		user.setFriendRequest(FriendRequset);
+		userMapper.updateByPrimaryKey(user);
+	
+		
+		return SocialResult.ok(username);
+	}
+	
 	
 	
 }

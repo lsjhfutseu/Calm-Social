@@ -13,4 +13,6 @@ public interface ThingsService {
 	public void postThings(String record,int userid);
 	
 	public SocialResult deleteThing(String username, int id);
+
+	public List inquiryComment(int thingId);  
 }

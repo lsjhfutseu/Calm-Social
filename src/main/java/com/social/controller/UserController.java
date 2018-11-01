@@ -92,4 +92,16 @@ public class UserController {
 		return userService.getFriendsRequest(username);
 		
 	}
+	
+	@RequestMapping("/rejectAddFriend")
+	@ResponseBody
+	public SocialResult rejectAddFriend(String friendname ,HttpServletRequest request,HttpServletResponse response) {
+		
+		String username=CookieUtils.getCookieValue(request, "user",true);  //true×ªÂë
+		
+		return userService.rejectAddFriend(username, friendname);
+							
+		
+	}
+	
 }
