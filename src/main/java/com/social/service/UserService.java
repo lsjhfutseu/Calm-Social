@@ -23,6 +23,7 @@ public interface UserService {
 	public SocialResult postNewthings(String record,String username);
 	
 	public SocialResult addFriend(String username, String friendname);
+	
 	public SocialResult searchFriend(String username);
 	
 	public SocialResult agreeAddFriend(String username, String friendname);

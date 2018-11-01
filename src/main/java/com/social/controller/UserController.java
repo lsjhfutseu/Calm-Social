@@ -44,7 +44,7 @@ public class UserController {
 		return userService.getNewthings(username);
 	}
 	
-
+	//提交新鲜事
 	@RequestMapping("/report")
 	@ResponseBody
 	public SocialResult postnewthings(String content ,HttpServletRequest request,HttpServletResponse response) {

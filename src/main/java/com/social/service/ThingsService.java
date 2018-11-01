@@ -10,7 +10,7 @@ public interface ThingsService {
 	//根据用户id获取新鲜事
 	public List getThingsByUserid(int userId);
 	
-	public void postThings(String record,int userid);
+	public SocialResult postThings(String record,int userid);
 	
 	public SocialResult deleteThing(String username, int id);
 

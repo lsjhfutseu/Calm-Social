@@ -40,11 +40,19 @@ public class ThingsServiceImpl implements ThingsService {
 		return list;
 	}
 
-	public void postThings(String record, int userid) {
+	public SocialResult postThings(String record, int userid) {
 		NewThings newthings = new NewThings();
 		newthings.setContent(record);
 		newthings.setUserid(userid);
-		newThingsMapper.insert(newthings);
+		try {
+			newThingsMapper.insert(newthings);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return SocialResult.build(400, "≤Â»Î–¬œ  ¬¥ÌŒÛ");
+		}
+		
+		return SocialResult.ok();
 	}
 
 	public SocialResult deleteThing(String username, int id) {

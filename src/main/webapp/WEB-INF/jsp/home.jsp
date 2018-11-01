@@ -178,7 +178,7 @@
 				for(var i = 0; i < result.data.length; i++){
 					var eachThing = result.data[i].split("+");
 					var footer = "";
-					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = "report_content"></textarea></div></form>';
+					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = \''+eachThing[3] +'comment_content'+'\'></textarea></div></form>';
 					if(eachThing[0] == user){  //如果为当前用户新鲜事则增加删除功能
 						footer = '<div class="panel-footer">'+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href= "javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-8 col-md-offset-8 col-sm-offset-8 col-xs-offset-5"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
 					}else{  //否则不允许删除
@@ -354,11 +354,12 @@
 			$("#"+ id + "comment").collapse();
 			$("#"+ id + "comment_btn").text("发表")
 		}
-		if($("#"+ id + "comment_btn").text() == "发表"){
+		else if($("#"+ id + "comment_btn").text() == "发表"){
+			var content = $("#"+ id + "comment_content").val();
 			$.ajax({
 				type : "POST",  //提交方式
 				url : "saveComment",//路径
-				data : {thingId:id, comment:$("#"+ id + "comment").val(), beCommented:''},//数据，这里使用的是Json格式进行传输
+				data : {thingId:id, comment:content, beCommented:''},//数据，这里使用的是Json格式进行传输
 				success : function(result) {//返回数据根据结果进行相应的处理
 					if(result.status == 200){
 						
