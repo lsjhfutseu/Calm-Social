@@ -38,12 +38,14 @@ public class ThingsController {
 
 	@RequestMapping("/inquiryComments")
 	@ResponseBody
-	public String inquiryThings(Integer thingId) {
+	public SocialResult inquiryThings(Integer thingId) {
 		// 根据新鲜事id查出评论，转为简单格式->json
-		System.out.println(thingId);
 		List ls = thingsService.inquiryComment(thingId);
-		String res = JsonUtils.objectToJson(ls);
-		return res;
+		if(ls != null) {
+			String res = JsonUtils.objectToJson(ls);
+			return SocialResult.ok(res);
+		}
+		return SocialResult.build(400,"没有评论");
 	}
 	
 	//saveComment
