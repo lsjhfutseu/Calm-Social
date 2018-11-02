@@ -2,11 +2,15 @@ package com.social.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.social.commonpojo.SocialResult;
+import com.social.commonpojo.SimpleThings;
+import com.social.commonpojo.JsonUtils;
 import com.social.commonpojo.SimpleComment;
 import com.social.mapper.NewThingsMapper;
 import com.social.pojo.Comment;
@@ -14,6 +18,7 @@ import com.social.pojo.CommentExample;
 import com.social.pojo.NewThings;
 import com.social.pojo.NewThingsExample;
 import com.social.pojo.NewThingsExample.Criteria;
+import com.social.pojo.User;
 import com.social.service.ThingsService;
 import com.social.service.UserService;
 import com.social.service.CommentService;
@@ -76,7 +81,80 @@ public class ThingsServiceImpl implements ThingsService {
 		return SocialResult.build(400, "该动态已删除");
 	}
 
-	public List inquiryComment(int thingId) {
+	/**
+	 * 获取自己和朋友的所有新鲜事，及旗下评论
+	 */
+	public SocialResult getNewthings(String userName) {
+		User user;
+		try {
+			user = userService.getUserbyName(userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return SocialResult.build(400, "无此用户");
+		}
+
+		int userId = user.getId();
+		String[] allId;
+		if(!"".equals(user.getFriend()) && user.getFriend() != null)
+		{
+			allId = (userId + "," + user.getFriend()).split(",");// userId和friendId
+		}
+		else {
+			allId = new String[1];
+			allId[0] = userId + "";
+		}
+		
+		
+		TreeMap<Integer, SimpleThings> thingsmap = new TreeMap<Integer, SimpleThings>();
+		
+		//针对每一个用户id查询newthings及其comment
+		for (int i = 0; i < allId.length; i++) {
+			int curId = Integer.valueOf(allId[i]);
+			String curIdName = userService.getNameById(curId);//此id的人名
+			
+			NewThingsExample example = new NewThingsExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andUseridEqualTo(curId);
+			List<NewThings> list = newThingsMapper.selectByExample(example);
+			//对于每一个newthings查询comment
+			for(int j=0;j<list.size();j++) {
+				NewThings curthings = list.get(j);
+				int curthingsId = curthings.getId();
+				
+				List<SimpleComment>  ls = commentService.inquiryComment(curthingsId);
+				 
+				SimpleThings smthings = new SimpleThings(curIdName, curthings.getContent(), curthings.getPosttime(), curthings.getId(), ls);
+
+				thingsmap.put(curthingsId, smthings);
+			}
+		}
+		
+		int num = thingsmap.size();
+		
+		SimpleThings[] res = new SimpleThings[num];
+		
+		//自然排序--递增
+		Set<Integer> set = thingsmap.keySet();
+		for (Integer key : set) {
+			SimpleThings value = thingsmap.get(key);
+			res[num-1]=value;
+			num--;
+		}
+		String temp = JsonUtils.objectToJson(res);
+		return SocialResult.ok(temp);
+		
+	
+	}
+	
+	
+	
+
+	public SocialResult postNewthings(String record, String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*public List inquiryComment(int thingId) {
 		List<Comment> list  = commentService.inquiryComment(thingId);
 		if(list.isEmpty()) {
 			return null;//SocialResult.build(400, "找不到该新鲜事的评论");
@@ -95,6 +173,8 @@ public class ThingsServiceImpl implements ThingsService {
 		return cmtList;
 		
 		
-	}
+	}*/
+	
+	
 
 }

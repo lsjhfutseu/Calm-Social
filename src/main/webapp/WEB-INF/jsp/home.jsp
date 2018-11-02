@@ -77,7 +77,7 @@
    </div> 
   </div> 
   
-  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-offset-1 col-xs-5 col-md-5 col-lg-5 col-sm-9" id = "newthings_show">
+  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-offset-1 col-xs-9 col-md-5 col-lg-5 col-sm-9" id = "newthings_show">
     <div class="row">
     	<div class = "col-lg-10 col-sm-10 col-md-10">
 		    <form role="form">
@@ -92,10 +92,10 @@
 </div>
     
   </div> 
-  
+  <!--  
   <div id = "body_r" class = "col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-sm-3 colcol-md-3 col-lg-3">
 	
-  </div>
+  </div>-->
   
  </div> 
 </div>
@@ -174,20 +174,24 @@
 			$("#personalBtn").html(user);
 			//更新新鲜事
 			$.get("getnewthings", function(result) {
+				alert(result);
 				//展示新鲜事
-				for(var i = 0; i < result.data.length; i++){
+				/*for(var i = 0; i < result.data.length; i++){
 					var eachThing = result.data[i].split("+");
 					var footer = "";
-					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = \''+eachThing[3] +'comment_content'+'\'></textarea></div></form>';
+					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = \''+eachThing[3] +'comment_content'+'\' placeholder="请输入评论"></textarea><a href="javascript:collapseCommentInput(\''+eachThing[3] +'comment'+'\',\''+eachThing[3] +'comment_btn'+'\');" class="col-lg-offset-11 col-md-offset-11 col-sm-offset-11 col-xs-offset-10"><small>收起</small></a></div></form>';
+					$.get("inquiryComments?thingId="+eachThing[3], function(data) {
+						
+					});
 					if(eachThing[0] == user){  //如果为当前用户新鲜事则增加删除功能
 						footer = '<div class="panel-footer">'+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href= "javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-8 col-md-offset-8 col-sm-offset-8 col-xs-offset-5"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
 					}else{  //否则不允许删除
-						footer = '<div class="panel-footer">'+collapse_input+'<a href="javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-7"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
+						footer = '<div class="panel-footer">'+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href="javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-7"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
 					}
 					$("#newthings_show").append(
 					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3>&nbsp;'+eachThing[2]+'</div>'
 				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
-				}
+				}*/
 			});
 			$("#body_r").append('<div id = "asker" class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3></div><div class="panel-body"><table class="table" style = "border:0px"><tr><td>刘炳璋</td><td>曹斌</td><td>杨涵</td><td>王五</td></tr><tr><td>张三</td><td>李四</td><td>王二麻子</td></tr></table></div></div>');
 		} else {
@@ -351,15 +355,15 @@
 	
 	function commentThing(id){
 		if($("#"+ id + "comment_btn").text() == "评论"){
-			$("#"+ id + "comment").collapse();
-			$("#"+ id + "comment_btn").text("发表")
+			$("#"+ id + "comment").collapse('toggle');
+			$("#"+ id + "comment_btn").html('<span class="glyphicon glyphicon-send"></span>发表');
 		}
 		else if($("#"+ id + "comment_btn").text() == "发表"){
 			var content = $("#"+ id + "comment_content").val();
 			$.ajax({
 				type : "POST",  //提交方式
 				url : "saveComment",//路径
-				data : {thingId:id, comment:content, beCommented:''},//数据，这里使用的是Json格式进行传输
+				data : {thingId:id, comment:content, becommentedId:'-1'},//数据，这里使用的是Json格式进行传输
 				success : function(result) {//返回数据根据结果进行相应的处理
 					if(result.status == 200){
 						
@@ -371,6 +375,11 @@
 				}  
 		    });
 		}
+	}
+	
+	function collapseCommentInput(commentInputId, btnId){
+		$("#"+ btnId).html('<span class="glyphicon glyphicon-edit"></span>评论');
+		$("#"+commentInputId).collapse('toggle');
 	}
 </script>
 </body>

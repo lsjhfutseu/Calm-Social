@@ -36,11 +36,13 @@ public class ThingsController {
 
 	}
 
-	@RequestMapping("/inquirycomments")
+	//查询新鲜事的评论
+	@RequestMapping("/inquiryComments")
 	@ResponseBody
-	public String inquiryThings(int thingId) {
+	public String inquiryThings(Integer thingId) {
 		// 根据新鲜事id查出评论，转为简单格式->json
-		List ls = thingsService.inquiryComment(thingId);
+		System.out.println(thingId);
+		List ls = commentService.inquiryComment(thingId);
 		String res = JsonUtils.objectToJson(ls);
 		return res;
 	}
@@ -48,11 +50,8 @@ public class ThingsController {
 	//saveComment
 	@RequestMapping("/saveComment")
 	@ResponseBody
-	public SocialResult saveComment(int thingId, String comment/*评论内容*/, String becommented/*被评论的人名字*/,
-			HttpServletRequest request, HttpServletResponse response) {
-
-		System.out.println(""+thingId+"+"+comment+"+"+becommented);
-		
+	public SocialResult saveComment(int thingId, String comment/*评论内容*/, Integer becommentedId/*被评论的id*/,
+			HttpServletRequest request, HttpServletResponse response) {		
 		String userName = CookieUtils.getCookieValue(request, "user", true);
 		
 		int cmtUserId = -1;
@@ -61,16 +60,12 @@ public class ThingsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return SocialResult.build(400, "请先登录");//???
-		}
-		
-		
-		int cmttedUserId = -1;
-		if (!"".equals(becommented) && becommented != null) {
-			cmttedUserId = userService.getIdbyName(becommented);// 任何数据库操作都要捕捉？
-		}
-		
-		
-		return commentService.saveComment(comment, cmtUserId, thingId, cmttedUserId);
+		}	
+		return commentService.saveComment(comment, cmtUserId, thingId, becommentedId);
 	}
+	
+	
+	
+	
 
 }

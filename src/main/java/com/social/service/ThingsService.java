@@ -14,5 +14,11 @@ public interface ThingsService {
 	
 	public SocialResult deleteThing(String username, int id);
 
-	public List inquiryComment(int thingId);  
+	/*public List inquiryComment(int thingId);  */
+
+	// 新鲜事，修改下比较好
+	public SocialResult getNewthings(String userName);
+
+	public SocialResult postNewthings(String record, String username);
+
 }

@@ -1,18 +1,26 @@
 package com.social.commonpojo;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class SimpleComment {
-	private String content;
+
 	private String cmtname; // 评论人
 	private String cmttedname; // 被评论人
+	private String content;  
+	private String postTime;
 	
-	//构造
-	public SimpleComment(String content, String cmtname, String cmttedname) {
+
+	// 构造
+	public SimpleComment(String content, String cmtname, String cmttedname,Date postTime ) {
 		this.content = content;
 		this.cmtname = cmtname;
 		this.cmttedname = cmttedname;
+		this.postTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(postTime);
 	}
 
-	//getset
+	// getset
 	public String getContent() {
 		return content;
 	}

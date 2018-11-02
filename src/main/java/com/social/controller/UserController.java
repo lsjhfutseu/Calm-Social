@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.social.commonpojo.CookieUtils;
 import com.social.commonpojo.SocialResult;
 import com.social.pojo.User;
+import com.social.service.ThingsService;
 import com.social.service.UserService;
 
 @Controller
 public class UserController {
 	@Autowired
 	UserService userService;
+	@Autowired
+	ThingsService thingsService;
+	
 
 	@RequestMapping("/regist")
 	@ResponseBody
@@ -34,6 +38,7 @@ public class UserController {
 		return userService.login(username, userpassword, request, response);
 	}
 	
+	//获取新鲜事，及其评论
 	@RequestMapping("/getnewthings")
 	@ResponseBody
 	public SocialResult newthings( HttpServletRequest request,HttpServletResponse response) {
@@ -41,9 +46,9 @@ public class UserController {
 		String username=CookieUtils.getCookieValue(request, "user", true);//true转码
 		
 		
-		return userService.getNewthings(username);
+		return thingsService.getNewthings(username);
 	}
-	
+	/*
 	//提交新鲜事
 	@RequestMapping("/report")
 	@ResponseBody
@@ -53,7 +58,7 @@ public class UserController {
 		
 		return userService.postNewthings(content,username);
 		
-	}
+	}*/
 	
 	@RequestMapping("/search_friend")
 	@ResponseBody
