@@ -65,7 +65,30 @@ public class ThingsController {
 	}
 	
 	
+	/**
+	 *  获取新鲜事，及其评论
+	 */
+	@RequestMapping("/getnewthings")
+	@ResponseBody
+	public SocialResult getnewthings(HttpServletRequest request, HttpServletResponse response) {
+		//
+		String username = CookieUtils.getCookieValue(request, "user", true);// true转码
+
+		return thingsService.getNewthings(username);
+	}
 	
+	/**
+	 * 发表新鲜事
+	 */
+	@RequestMapping("/report")
+	@ResponseBody
+	public SocialResult postnewthings(String content ,HttpServletRequest request,HttpServletResponse response) {
+		
+		String username=CookieUtils.getCookieValue(request, "user",true);  //true转码
+		
+		return thingsService.postNewthings(content,username);
+		
+	}
 	
 
 }

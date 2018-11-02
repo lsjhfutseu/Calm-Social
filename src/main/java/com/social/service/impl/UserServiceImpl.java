@@ -137,7 +137,9 @@ public class UserServiceImpl implements UserService {
 
 	}
 	*/
-	//根据name取id
+	/**
+	 * 根据name取id
+	 */
 	public int getIdbyName(String username) {
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
@@ -149,7 +151,9 @@ public class UserServiceImpl implements UserService {
 		return id;
 	}
 	
-	//
+	/**
+	 * 
+	 */
 	public String getNameById(int userid) {
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
@@ -163,7 +167,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 
-	
+	/*
 	
 	public SocialResult postNewthings(String record,String username) {
 		
@@ -179,7 +183,7 @@ public class UserServiceImpl implements UserService {
 		}
 		
 	}
-	
+	*/
 	
 
 	public SocialResult addFriend(String username, String friendname) {

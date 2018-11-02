@@ -33,6 +33,8 @@ public class ThingsServiceImpl implements ThingsService {
 	@Autowired
 	CommentService commentService;
 	
+	
+	
 	public List<NewThings> getThingsByUserid(int userId) {
 
 		NewThingsExample example = new NewThingsExample();
@@ -44,22 +46,10 @@ public class ThingsServiceImpl implements ThingsService {
 
 		return list;
 	}
-
-	public SocialResult postThings(String record, int userid) {
-		NewThings newthings = new NewThings();
-		newthings.setContent(record);
-		newthings.setUserid(userid);
-		try {
-			newThingsMapper.insert(newthings);
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-			return SocialResult.build(400, "插入新鲜事错误");
-		}
-		
-		return SocialResult.ok();
-	}
-
+	
+	/**
+	 * 删除新鲜事    //评论未变
+	 */
 	public SocialResult deleteThing(String username, int id) {
 		// 校验是否为当前用户的新鲜事
 		int curUserId = userService.getIdbyName(username);
@@ -146,34 +136,27 @@ public class ThingsServiceImpl implements ThingsService {
 	
 	}
 	
-	
-	
 
-	public SocialResult postNewthings(String record, String username) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * 发表新鲜事
+	 */
+	public SocialResult postNewthings(String record, String userName) {
+		int userId= userService.getIdbyName(userName);
+		
+		NewThings newthings = new NewThings();
+		newthings.setContent(record);
+		newthings.setUserid(userId);
+		try {
+			newThingsMapper.insert(newthings);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return SocialResult.build(400, "插入新鲜事错误");
+		}
+		
+		return SocialResult.ok();
 	}
 
-	/*public List inquiryComment(int thingId) {
-		List<Comment> list  = commentService.inquiryComment(thingId);
-		if(list.isEmpty()) {
-			return null;//SocialResult.build(400, "找不到该新鲜事的评论");
-		}
-		
-		List<SimpleComment> cmtList = new ArrayList<SimpleComment>();
-		for (int i = 0; i < list.size(); i++) {
-			Comment cur = list.get(i);
-
-			String cmtUserName = userService.getNameById(cur.getCmtuserid());
-			String cmttedUserName = userService.getNameById(cur.getCmtuserid());
-
-			SimpleComment simcom = new SimpleComment(cur.getContent(), cmtUserName, cmttedUserName);
-			cmtList.add(simcom);
-		}
-		return cmtList;
-		
-		
-	}*/
 	
 	
 
