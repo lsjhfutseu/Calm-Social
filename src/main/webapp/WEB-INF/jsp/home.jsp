@@ -174,39 +174,38 @@
 			$("#personalBtn").html(user);
 			//更新新鲜事
 			$.get("getnewthings", function(result) {
-				alert(result);
+				var json = eval('(' + result.data + ')');
 				//展示新鲜事
-				/*for(var i = 0; i < result.data.length; i++){
-					var eachThing = result.data[i].split("+");
+				for(var i = 0; i < json.length; i++){
+					var eachThing = new Array();
+					eachThing[0] = json[i]["curUsername"];
+					eachThing[1] = json[i]["content"];
+					eachThing[2] = json[i]["postTime"];
+					eachThing[3] = json[i]["thingId"];
+					var comment_body = "";
+					for(var j = 0; j < json[i]["commentList"].length; j++){
+						var cmtName = json[i]["commentList"][j].cmtname; //展开评论
+						var cmtId = json[i]["commentList"][j].cmtId;
+						var content = json[i]["commentList"][j].content;
+						var cmttedname = json[i]["commentList"][j].cmttedname;
+						var postTime = json[i]["commentList"][j].postTime;
+						if(cmttedname != null)
+							comment_body += '<div style="margin-top:7px">' +"&nbsp;&nbsp;<a href = '#'><b>"+cmtName+"</b></a>&nbsp;"+'回复&nbsp;<a href = "#">'+cmttedname+"</a>:&nbsp;"+content+"</div>" + "<div>&nbsp;&nbsp;&nbsp;&nbsp;<font size='0.3' color='#666666'>"+postTime+'&nbsp;&nbsp;&nbsp;&nbsp;<a href= "javascript:commentComment(\''+eachThing[3]+'\',\''+cmtName+'\',\''+cmtId+'\')">回复</a>'+'</font></div>';
+						else
+							comment_body += "<div style='margin-top:7px'>"+"&nbsp;&nbsp;<a href = '#'><b>"+cmtName+"</b></a>:&nbsp;"+content+"</div>"+ "<div>&nbsp;&nbsp;&nbsp;&nbsp;<font size='0.3' color='#666666'>"+postTime+'&nbsp;&nbsp;&nbsp;&nbsp;<a href= "javascript:commentComment(\''+eachThing[3]+'\',\''+cmtName+'\',\''+cmtId+'\')">回复</a>'+'</font></div>';;	
+					}	
 					var footer = "";
 					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = \''+eachThing[3] +'comment_content'+'\' placeholder="请输入评论"></textarea><a href="javascript:collapseCommentInput(\''+eachThing[3] +'comment'+'\',\''+eachThing[3] +'comment_btn'+'\');" class="col-lg-offset-11 col-md-offset-11 col-sm-offset-11 col-xs-offset-10"><small>收起</small></a></div></form>';
-					var comment_body = "";
-					$.ajax({
-						type : "GET",  //提交方式
-						url : "inquiryComments?thingId="+eachThing[3],//路径
-						async: false,
-						success : function(data) {//返回数据根据结果进行相应的处理
-							if(data.status == 200){
-								var json =  eval('(' + data.data + ')')
-								for(var j = 0; j < json.length; ++j){
-									comment_body += '<div>'+json[j]['cmtname']+'回复'+json[j]['cmttedname']+':'+json[j]['content']+'</div>';
-								}
-							}
-						},
-					 	error:function(e){  
-						 	alert("出错");
-						}  
-				    });
+					var hide_input = '<input type="hidden" id=\''+eachThing[3] +'hide_input'+'\' value="-1">';
 					if(eachThing[0] == user){  //如果为当前用户新鲜事则增加删除功能
-						alert(comment_body);
-						footer = '<div class="panel-footer">'+comment_body+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href= "javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-8 col-md-offset-8 col-sm-offset-8 col-xs-offset-5"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
+						footer = '<div class="panel-footer">'+comment_body+hide_input+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href= "javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-8 col-md-offset-8 col-sm-offset-8 col-xs-offset-5"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
 					}else{  //否则不允许删除
-						footer = '<div class="panel-footer">'+comment_body+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href="javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-7"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
+						footer = '<div class="panel-footer">'+comment_body+hide_input+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href="javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-7"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
 					}
 					$("#newthings_show").append(
 					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3>&nbsp;'+eachThing[2]+'</div>'
 				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
-				}*/
+				}
 			});
 			$("#body_r").append('<div id = "asker" class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3></div><div class="panel-body"><table class="table" style = "border:0px"><tr><td>刘炳璋</td><td>曹斌</td><td>杨涵</td><td>王五</td></tr><tr><td>张三</td><td>李四</td><td>王二麻子</td></tr></table></div></div>');
 		} else {
@@ -375,14 +374,16 @@
 		}
 		else if($("#"+ id + "comment_btn").text() == "发表"){
 			var content = $("#"+ id + "comment_content").val();
+			var _becommentedId = $("#"+ id + "hide_input").val();
 			$.ajax({
 				type : "POST",  //提交方式
 				url : "saveComment",//路径
-				data : {thingId:id, comment:content, becommentedId:'-1'},//数据，这里使用的是Json格式进行传输
+				data : {thingId:id, comment:content, becommentedId:_becommentedId},//数据，这里使用的是Json格式进行传输
 				success : function(result) {//返回数据根据结果进行相应的处理
 					if(result.status == 200){
-						
-						$("#"+ id + "comment").collapse();
+						$("#"+ id + "comment").collapse('toggle');
+						parent.location.reload();
+						$("#"+ id + "hide_input").val("-1");
 					}
 				},
 			 	error:function(e){  
@@ -390,6 +391,13 @@
 				}  
 		    });
 		}
+	}
+	
+	function commentComment(thingId, cmtName, cmtId){
+		$("#"+ thingId + "comment").collapse('toggle');
+		$("#"+ thingId + "comment_btn").html('<span class="glyphicon glyphicon-send"></span>发表');
+		$("#"+ thingId + "comment_content").attr('placeholder', '回复'+cmtName);
+		$("#"+ thingId + "hide_input").val(cmtId);
 	}
 	
 	function collapseCommentInput(commentInputId, btnId){
