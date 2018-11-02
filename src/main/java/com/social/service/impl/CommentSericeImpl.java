@@ -19,11 +19,11 @@ public class CommentSericeImpl implements CommentService {
 	CommentMapper commentMapper;
 
 	//根据id查询的commet列表
-	public List inquiryComment(int commentId) {
+	public List inquiryComment(int thingId) {
 		
 		CommentExample example = new CommentExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andIdEqualTo(commentId);
+		criteria.andThingsidEqualTo(thingId);
 		List<Comment> list = commentMapper.selectByExample(example);
 		
 		return list;
