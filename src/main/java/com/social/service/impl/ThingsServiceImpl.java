@@ -50,25 +50,35 @@ public class ThingsServiceImpl implements ThingsService {
 	/**
 	 * 删除新鲜事    //评论未变
 	 */
-	public SocialResult deleteThing(String username, int id) {
+	public SocialResult deleteThing(String username, int thingsId) {
 		// 校验是否为当前用户的新鲜事
 		int curUserId = userService.getIdbyName(username);
 		NewThingsExample example = new NewThingsExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andIdEqualTo(id);
+		criteria.andIdEqualTo(thingsId);
 		List<NewThings> list = newThingsMapper.selectByExample(example);
 		if (!list.isEmpty()) {
 			NewThings newThings = list.get(0);
 			if (newThings.getUserid() == curUserId) {
 				try {
-					newThingsMapper.deleteByPrimaryKey(id);
-					return SocialResult.ok("删除成功");
+					newThingsMapper.deleteByPrimaryKey(thingsId);
+					
 				} catch (Exception e) {
-					return SocialResult.build(400, "删除失败");
+					return SocialResult.build(400, "删除新鲜事失败");
 				}
 			}
 		}
-		return SocialResult.build(400, "该动态已删除");
+		
+		//删除此条things下的所有comment
+		try {
+			commentService.deleteCommentByThingsId(thingsId, username);
+		} catch (Exception e) {
+			return SocialResult.build(400, "删除comment异常");
+		}
+		
+		
+		
+		return SocialResult.build(400, "该动态及评论已删除");
 	}
 
 	/**
@@ -155,6 +165,18 @@ public class ThingsServiceImpl implements ThingsService {
 		}
 		
 		return SocialResult.ok();
+	}
+
+	public NewThings getThingsByThingsid(int thingsId) {
+		NewThingsExample example = new NewThingsExample();
+
+		Criteria criteria = example.createCriteria();
+		criteria.andIdEqualTo(thingsId);
+		List<NewThings> list = newThingsMapper.selectByExample(example);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
 	}
 
 	

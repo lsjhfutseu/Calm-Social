@@ -26,6 +26,9 @@ public class ThingsController {
 	@Autowired
 	CommentService commentService;
 
+	/**
+	 * 删除新鲜事
+	 */
 	@RequestMapping("/deleteThing")
 	@ResponseBody
 	public SocialResult deleteThing(int thingId, HttpServletRequest request, HttpServletResponse response) {
@@ -36,7 +39,9 @@ public class ThingsController {
 
 	}
 	
-	//saveComment
+	/**
+	 * saveComment
+	 */
 	@RequestMapping("/saveComment")
 	@ResponseBody
 	public SocialResult saveComment(int thingId, String comment/*评论内容*/, Integer becommentedId/*被评论的id*/,
@@ -79,5 +84,17 @@ public class ThingsController {
 		
 	}
 	
+	/**
+	 * 删除评论
+	 */
+	@RequestMapping("/deleteComment")
+	@ResponseBody
+	public SocialResult deleteComment(int commentId ,HttpServletRequest request, HttpServletResponse response) {
+		String userName=CookieUtils.getCookieValue(request, "user",true);  //true转码
+		
+		return commentService.deleteComment(commentId, userName);
+		
+		
+	}
 
 }

@@ -11,4 +11,7 @@ public interface CommentService {
 	
 	public SocialResult saveComment(String content,int cmtUserId , int thingsId, int cmttedUserId);
 	
+	public SocialResult deleteComment(int commentId,String userName);
+	
+	public SocialResult deleteCommentByThingsId(int thingsId,String userName);
 }

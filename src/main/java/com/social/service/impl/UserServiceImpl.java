@@ -2,6 +2,7 @@ package com.social.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import com.social.commonpojo.CookieUtils;
+import com.social.commonpojo.JsonUtils;
+import com.social.commonpojo.SimpleUser;
 import com.social.commonpojo.SocialResult;
 import com.social.mapper.UserMapper;
 import com.social.pojo.NewThings;
@@ -396,6 +399,27 @@ public class UserServiceImpl implements UserService {
 			return null;
 	
 		return list.get(0);
+	}
+
+	public SocialResult getAllFriend(String userName) {
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(userName);
+		List<User> list = userMapper.selectByExample(example);
+		if(list.isEmpty()) {
+			return SocialResult.build(400, "ÓÃ»§Î´×¢²á");
+		}
+		String[] friend = list.get(0).getFriend().split(",");
+		List<SimpleUser> friendlist = new ArrayList<SimpleUser>();
+		for(int i= 0 ;i<friend.length;i++) {
+			String friendName = getNameById(Integer.valueOf(friend[i]));
+			friendlist.add(new SimpleUser(Integer.valueOf(friend[i]), friendName));
+		}
+		
+		String json = JsonUtils.objectToJson(friendlist);
+		return SocialResult.ok(json);
+		
+		
 	}
 	
 	

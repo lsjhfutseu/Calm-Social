@@ -31,6 +31,6 @@ public interface UserService {
 	
 	public User getUserbyName(String userName);
 
-	
+	public SocialResult getAllFriend(String userName);
 
 }

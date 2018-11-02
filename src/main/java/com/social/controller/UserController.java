@@ -105,8 +105,16 @@ public class UserController {
 		String username=CookieUtils.getCookieValue(request, "user",true);  //true×ªÂë
 		
 		return userService.rejectAddFriend(username, friendname);
-							
-		
 	}
+	
+	@RequestMapping("/getAllFriend")
+	@ResponseBody
+	public SocialResult getAllFriend(HttpServletRequest request, HttpServletResponse response) {
+
+		String userName = CookieUtils.getCookieValue(request, "user", true); // true×ªÂë
+
+		return userService.getAllFriend(userName);
+	}
+	
 	
 }

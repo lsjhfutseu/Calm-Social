@@ -9,10 +9,10 @@ public interface ThingsService {
 	
 	//根据用户id获取新鲜事
 	public List getThingsByUserid(int userId);
+	public NewThings getThingsByThingsid(int thingsId);
 	
 	
-	
-	public SocialResult deleteThing(String username, int id);
+	public SocialResult deleteThing(String username, int thingsId);
 
 	/*public List inquiryComment(int thingId);  */
 
