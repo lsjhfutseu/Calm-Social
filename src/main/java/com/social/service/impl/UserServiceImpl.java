@@ -81,9 +81,10 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-
+/*
+	//获取新鲜事及其评论
 	public SocialResult getNewthings(String username) {
-		
+		//获取userId 和 若干friendId
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andNameEqualTo(username);
@@ -96,9 +97,7 @@ public class UserServiceImpl implements UserService {
 			if(list.get(0).getFriend() !=null && !"".equals(list.get(0).getFriend()))
 				friendsId= list.get(0).getFriend().split(",");
 		}
-		
 
-		
 		//获取所有人的新鲜事
 		if(userId != -1) {
 			TreeMap<Integer, String> thingsmap = new TreeMap<Integer, String>();
@@ -106,8 +105,9 @@ public class UserServiceImpl implements UserService {
 			List<NewThings> ls = thingsService.getThingsByUserid(userId);
 			String curUsername = getNameById(userId);
 			for(int i = 0; i < ls.size(); i++) {
-				NewThings temp = ls.get(i);
-				thingsmap.put(temp.getId(), curUsername + "+" + temp.getContent()+"+"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(temp.getPosttime())+"+"+temp.getId());
+				NewThings nt = ls.get(i);
+				thingsmap.put(nt.getId(), curUsername + "+" + nt.getContent()+"+"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(nt.getPosttime())+"+"+nt.getId());
+			
 			}
 			
 			
@@ -120,9 +120,8 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 			
-	
 			int num=thingsmap.size();//总共newthingsId数
-			String[] things = new String[thingsmap.size()];
+			String[] things = new String[num];
 			//自然排序--递增
 			Set<Integer> set = thingsmap.keySet();
 			for (Integer key : set) {
@@ -137,8 +136,10 @@ public class UserServiceImpl implements UserService {
 		return SocialResult.build(400,"无内容");
 
 	}
-	
-	//根据name取id
+	*/
+	/**
+	 * 根据name取id
+	 */
 	public int getIdbyName(String username) {
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
@@ -150,7 +151,9 @@ public class UserServiceImpl implements UserService {
 		return id;
 	}
 	
-	//
+	/**
+	 * 
+	 */
 	public String getNameById(int userid) {
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
@@ -164,7 +167,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 
-	
+	/*
 	
 	public SocialResult postNewthings(String record,String username) {
 		
@@ -180,6 +183,8 @@ public class UserServiceImpl implements UserService {
 		}
 		
 	}
+	*/
+	
 
 	public SocialResult addFriend(String username, String friendname) {
 		if(username == friendname)
@@ -380,6 +385,17 @@ public class UserServiceImpl implements UserService {
 	
 		
 		return SocialResult.ok(username);
+	}
+
+	public User getUserbyName(String userName) {
+		UserExample example = new UserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andNameEqualTo(userName);
+		List<User> list = userMapper.selectByExample(example);
+		if(list.isEmpty())
+			return null;
+	
+		return list.get(0);
 	}
 	
 	

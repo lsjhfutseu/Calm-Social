@@ -174,8 +174,9 @@
 			$("#personalBtn").html(user);
 			//更新新鲜事
 			$.get("getnewthings", function(result) {
+				alert(result);
 				//展示新鲜事
-				for(var i = 0; i < result.data.length; i++){
+				/*for(var i = 0; i < result.data.length; i++){
 					var eachThing = result.data[i].split("+");
 					var footer = "";
 					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = \''+eachThing[3] +'comment_content'+'\' placeholder="请输入评论"></textarea><a href="javascript:collapseCommentInput(\''+eachThing[3] +'comment'+'\',\''+eachThing[3] +'comment_btn'+'\');" class="col-lg-offset-11 col-md-offset-11 col-sm-offset-11 col-xs-offset-10"><small>收起</small></a></div></form>';
@@ -205,7 +206,7 @@
 					$("#newthings_show").append(
 					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3>&nbsp;'+eachThing[2]+'</div>'
 				    	+'<div class="panel-body">'+eachThing[1]+'</div>'+footer+'</div></div>');
-				}
+				}*/
 			});
 			$("#body_r").append('<div id = "asker" class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>最近来访</h3></div><div class="panel-body"><table class="table" style = "border:0px"><tr><td>刘炳璋</td><td>曹斌</td><td>杨涵</td><td>王五</td></tr><tr><td>张三</td><td>李四</td><td>王二麻子</td></tr></table></div></div>');
 		} else {

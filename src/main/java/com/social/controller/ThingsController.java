@@ -35,18 +35,6 @@ public class ThingsController {
 		return thingsService.deleteThing(username, thingId);
 
 	}
-
-	@RequestMapping("/inquiryComments")
-	@ResponseBody
-	public SocialResult inquiryThings(Integer thingId) {
-		// 根据新鲜事id查出评论，转为简单格式->json
-		List ls = thingsService.inquiryComment(thingId);
-		if(ls != null) {
-			String res = JsonUtils.objectToJson(ls);
-			return SocialResult.ok(res);
-		}
-		return SocialResult.build(400,"没有评论");
-	}
 	
 	//saveComment
 	@RequestMapping("/saveComment")
@@ -64,5 +52,32 @@ public class ThingsController {
 		}	
 		return commentService.saveComment(comment, cmtUserId, thingId, becommentedId);
 	}
+	
+	
+	/**
+	 *  获取新鲜事，及其评论
+	 */
+	@RequestMapping("/getnewthings")
+	@ResponseBody
+	public SocialResult getnewthings(HttpServletRequest request, HttpServletResponse response) {
+		//
+		String username = CookieUtils.getCookieValue(request, "user", true);// true转码
+
+		return thingsService.getNewthings(username);
+	}
+	
+	/**
+	 * 发表新鲜事
+	 */
+	@RequestMapping("/report")
+	@ResponseBody
+	public SocialResult postnewthings(String content ,HttpServletRequest request,HttpServletResponse response) {
+		
+		String username=CookieUtils.getCookieValue(request, "user",true);  //true转码
+		
+		return thingsService.postNewthings(content,username);
+		
+	}
+	
 
 }
