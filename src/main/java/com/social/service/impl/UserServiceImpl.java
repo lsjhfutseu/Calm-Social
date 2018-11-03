@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
 	
 
 	public SocialResult addFriend(String username, String friendname) {
-		if(username == friendname)
+		if(username.equals(friendname))
 			return SocialResult.build(445, "不可添加自己为好友");
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();
@@ -251,7 +251,7 @@ public class UserServiceImpl implements UserService {
 
 	public SocialResult agreeAddFriend(String username, String friendname) {
 		//首先加入自己的friend里
-		if(username == friendname)
+		if(username.equals(friendname))
 			return SocialResult.build(445, "不可添加自己为好友");
 		UserExample example = new UserExample();
 		Criteria criteria = example.createCriteria();

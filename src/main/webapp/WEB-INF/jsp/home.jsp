@@ -12,7 +12,18 @@
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    
+    <link href="css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+	<link href="css/fileinput.min.css" media="all" rel="stylesheet" type="text/css"/>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css"/>
+	<link href="themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css"/>
+
+	<script src="js/plugins/sortable.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/fileinput.js"></script>
+	<script type="text/javascript" src="js/locales/zh.js"></script>
+	<script src="themes/explorer-fa/theme.js" type="text/javascript"></script>
+	<script src="themes/fa/theme.js" type="text/javascript"></script>
+	<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 	
 	<title>Calm-Social</title>
@@ -34,7 +45,7 @@
 
 <body background="images/home_bg.jpg" style="background-repeat:no-repeat; background-size:cover;">
 
-<div class="container"> 
+<div class="container">
  <div class="row"> 
   <nav class="navbar navbar-default" style = "background-color:#CDBA96;border:0px;" > 
    <div class="container-fluid"> 
@@ -65,11 +76,11 @@
  
  <div class="row"> 
  
-  <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2" style = "text-align:center;"> 
+  <div class="col-sm-2 col-md-2 col-lg-2 hidden-xs" style = "text-align:center;"> 
    <div class="row">
    <ul class="list-group">
 	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-user"></span>个人中心</a> </li>
-	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>新鲜事儿</a> </li>
+	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>设置头像</a> </li>
 	  <li class="list-group-item"><a href="#"><span class="glyphicon glyphicon-film"></span>我的相册</a></li>
 	  <li class="list-group-item"><a href="#" data-toggle="modal" data-target="#addFriendsModal"><span class="glyphicon glyphicon-user"></span>搜寻好友</a></li>
 	  <li class="list-group-item"><a href="javascript:showFriendRequest()"><span class="glyphicon glyphicon-film"></span>好友请求</a></li>
@@ -77,25 +88,36 @@
    </div> 
   </div> 
   
-  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-offset-1 col-xs-9 col-md-5 col-lg-5 col-sm-9" id = "newthings_show">
+  <div class="col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-12 col-md-5 col-lg-5 col-sm-5" id = "newthings_show">
+    <div class="hidden-sm hidden-md hidden-lg hidden-print">
+	  <a href="#">个人中心&nbsp;</a>
+	  <a href="#">相册&nbsp;</a>
+	  <a href="#" data-toggle="modal" data-target="#addFriendsModal">搜寻好友&nbsp;</a>
+	  <a href="javascript:showFriendRequest()">好友请求&nbsp;</a>
+	  <a href="#">最近访客</a>
+	  <hr/>
+	</div>
     <div class="row">
-    	<div class = "col-lg-10 col-sm-10 col-md-10">
+    	<div class = "col-lg-9 col-sm-9 col-md-9 col-xs-8">
 		    <form role="form">
 			  <div class="form-group">
 			    <textarea class="form-control" rows="2" placeholder = "说些什么吧" id = "report_content"></textarea>
+			    <a style = "margin-left:5px;" href="#" data-toggle="modal" data-target="#newthingsPictureModal"><span class="glyphicon glyphicon-picture"></span></a>
 			  </div>
 			</form>
+			<div class="form-group">
+		    </div> 
 		</div>
-		<div class = "col-xs-2 col-lg-2 col-sm-2 col-md-2">
+		<div class = "col-xs-2 col-lg-2 col-sm-2 col-md-2 col-xs-2">
 			<button class="btn btn-default btn-lg" onclick = "report()">发表</button> 
 		</div>
 </div>
     
   </div> 
-  <!--  
-  <div id = "body_r" class = "col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-sm-3 colcol-md-3 col-lg-3">
+   
+  <div id = "body_r" class = "col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-sm-3 colcol-md-3 col-lg-3 hidden-xs">
 	
-  </div>-->
+  </div>
   
  </div> 
 </div>
@@ -111,11 +133,11 @@
             <div class="modal-body" id = "addFriendBody">
             	<form class="form-horizontal" role="form" id = "addFriendsForm" onsubmit="return check(this);">
 				  <div class="form-group">
-				    <label for="firstname" class="col-sm-3 col-md-3 col-lg-3 control-label">用户名</label>
-				    <div class="col-sm-6 col-md-6 col-lg-6">
+				    <label for="firstname" class="col-sm-3 col-md-3 col-lg-3 col-xs-3 control-label">用户名</label>
+				    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6">
 				      <input type="text" class="form-control" name = "username" id="friend_name" placeholder="请输入用户名">
 				    </div>
-				    <div class="col-sm-2 col-md-2 col-lg-2">
+				    <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
 				      <button class="btn btn-default" type="button" onclick="searchFriends()">搜索</button>
 				    </div>
 				  </div>
@@ -162,6 +184,28 @@
     </div><!-- /.modal -->
 </div>
 
+<!-- 发表动态图片添加（Modal） -->
+<div class="modal fade" id="newthingsPictureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加图片</h4>
+            </div>
+            <div class="modal-body" id = "newthingsPictureBody">
+            	<div class="form-group">
+		            <div class="file-loading">
+		                <label>Preview File Icon</label>
+		                <input id="file-3" type="file" multiple>
+		            </div>
+		        </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 <script type="text/javascript">
 
@@ -198,9 +242,9 @@
 					var collapse_input = '<form role="form" id = \''+eachThing[3] +'comment'+'\' class = "panel-collapse collapse"><div class="form-group"><textarea class="form-control" rows="2" id = \''+eachThing[3] +'comment_content'+'\' placeholder="请输入评论"></textarea><a href="javascript:collapseCommentInput(\''+eachThing[3] +'comment'+'\',\''+eachThing[3] +'comment_btn'+'\');" class="col-lg-offset-11 col-md-offset-11 col-sm-offset-11 col-xs-offset-10"><small>收起</small></a></div></form>';
 					var hide_input = '<input type="hidden" id=\''+eachThing[3] +'hide_input'+'\' value="-1">';
 					if(eachThing[0] == user){  //如果为当前用户新鲜事则增加删除功能
-						footer = '<div class="panel-footer">'+comment_body+hide_input+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href= "javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-8 col-md-offset-8 col-sm-offset-8 col-xs-offset-5"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
+						footer = '<div class="panel-footer">'+comment_body+hide_input+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href= "javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-8 col-md-offset-9 col-sm-offset-8 col-xs-offset-9"><span class="glyphicon glyphicon-edit"></span>评论</a><a href="javascript:deleteThing(\''+eachThing[3]+'\')" class="col-lg-offset-1"><span class="glyphicon glyphicon-trash"></span>删除</a></div>';
 					}else{  //否则不允许删除
-						footer = '<div class="panel-footer">'+comment_body+hide_input+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href="javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-7"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
+						footer = '<div class="panel-footer">'+comment_body+hide_input+collapse_input+'<a id = \''+eachThing[3] +'comment_btn'+'\' href="javascript:commentThing(\''+eachThing[3]+'\')" class = "col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-10"><span class="glyphicon glyphicon-edit"></span>评论</a></div>';
 					}
 					$("#newthings_show").append(
 					'<div class="row"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title"><span class="glyphicon glyphicon-user"></span>'+eachThing[0]+'</h3>&nbsp;'+eachThing[2]+'</div>'
@@ -369,7 +413,7 @@
 	
 	function commentThing(id){
 		if($("#"+ id + "comment_btn").text() == "评论"){
-			$("#"+ id + "comment").collapse('toggle');
+			$("#"+ id + "comment").collapse('show');
 			$("#"+ id + "comment_btn").html('<span class="glyphicon glyphicon-send"></span>发表');
 		}
 		else if($("#"+ id + "comment_btn").text() == "发表"){
@@ -381,7 +425,7 @@
 				data : {thingId:id, comment:content, becommentedId:_becommentedId},//数据，这里使用的是Json格式进行传输
 				success : function(result) {//返回数据根据结果进行相应的处理
 					if(result.status == 200){
-						$("#"+ id + "comment").collapse('toggle');
+						$("#"+ id + "comment").collapse('hide');
 						parent.location.reload();
 						$("#"+ id + "hide_input").val("-1");
 					}
@@ -394,16 +438,48 @@
 	}
 	
 	function commentComment(thingId, cmtName, cmtId){
-		$("#"+ thingId + "comment").collapse('toggle');
+		$("#"+ thingId + "comment").collapse('show');
 		$("#"+ thingId + "comment_btn").html('<span class="glyphicon glyphicon-send"></span>发表');
-		$("#"+ thingId + "comment_content").attr('placeholder', '回复'+cmtName);
+		$("#"+ thingId + "comment_content").attr('placeholder', '回复'+cmtName+':');
 		$("#"+ thingId + "hide_input").val(cmtId);
 	}
 	
 	function collapseCommentInput(commentInputId, btnId){
 		$("#"+ btnId).html('<span class="glyphicon glyphicon-edit"></span>评论');
-		$("#"+commentInputId).collapse('toggle');
+		$("#"+commentInputId).collapse('hide');
 	}
+	
+    $("#file-3").fileinput({
+    	theme: 'fa',
+        language : 'zh',
+        uploadUrl : "/image/save-test",
+        showUpload: true, //是否显示上传按钮
+        showRemove : true, //显示移除按钮
+        showPreview : true, //是否显示预览
+        showCaption: false,//是否显示标题
+        autoReplace : true,
+        minFileCount: 0,
+        uploadAsync: true,
+        maxFileCount: 10,//最大上传数量
+        browseOnZoneClick: true,
+        msgFilesTooMany: "选择上传的文件数量 超过允许的最大数值！",
+        enctype: 'multipart/form-data',
+        // overwriteInitial: false,//不覆盖已上传的图片
+        allowedFileExtensions : [ "jpg", "png", "gif" ],
+        browseClass : "btn btn-primary", //按钮样式
+        previewFileIcon : "<i class='glyphicon glyphicon-king'></i>",
+       	previewSettings: {
+               image: {width: "100px", height: "100px"},
+        }
+    }).on("fileuploaded", function(e, data) {//文件上传成功的回调函数，还有其他的一些回调函数，比如上传之前...
+        var res = data.response;
+        console.log(res)
+        imageData.push({
+            "path": res.data.path,
+            "date":res.data.date
+        });
+        console.log(imageData);
+    });
 </script>
 </body>
 </html>
