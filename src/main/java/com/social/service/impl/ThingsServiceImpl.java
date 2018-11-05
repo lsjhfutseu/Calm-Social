@@ -66,19 +66,20 @@ public class ThingsServiceImpl implements ThingsService {
 				} catch (Exception e) {
 					return SocialResult.build(400, "删除新鲜事失败");
 				}
+				//删除此条things下的所有comment
+				try {
+					commentService.deleteCommentByThingsId(thingsId, username);
+				} catch (Exception e) {
+					return SocialResult.build(400, "删除comment异常");
+				}	
+				return SocialResult.ok();
+			}
+			else {
+				return SocialResult.build(400, "无删除权限");
 			}
 		}
+		return SocialResult.build(400, "删除comment异常");
 		
-		//删除此条things下的所有comment
-		try {
-			commentService.deleteCommentByThingsId(thingsId, username);
-		} catch (Exception e) {
-			return SocialResult.build(400, "删除comment异常");
-		}
-		
-		
-		
-		return SocialResult.build(400, "该动态及评论已删除");
 	}
 
 	/**

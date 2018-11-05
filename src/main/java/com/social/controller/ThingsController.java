@@ -1,6 +1,6 @@
 package com.social.controller;
 
-import java.util.List;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.social.commonpojo.CookieUtils;
-import com.social.commonpojo.JsonUtils;
+
 import com.social.commonpojo.SocialResult;
 import com.social.service.CommentService;
 import com.social.service.ThingsService;

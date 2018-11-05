@@ -102,14 +102,7 @@ public class CommentSericeImpl implements CommentService {
 	public SocialResult deleteCommentByThingsId(int thingsId, String userName) {
 		CommentExample example = new CommentExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andThingsidEqualTo(thingsId);
-		
-		int userId = userService.getIdbyName(userName);
-		int thingsUserId = thingsService.getThingsByThingsid(thingsId).getUserid();
-		if(userId != thingsUserId ) {
-			return SocialResult.build(400, "ÎÞÉ¾³ýÈ¨ÏÞ");
-		}
-	
+		criteria.andThingsidEqualTo(thingsId);	
 		commentMapper.deleteByExample(example);
 		
 		return SocialResult.ok();
