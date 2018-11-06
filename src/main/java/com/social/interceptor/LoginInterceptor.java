@@ -12,7 +12,7 @@ import com.social.service.impl.UserServiceImpl;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
-	@Override
+	//@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		//在Handler执行之前处理
@@ -20,10 +20,16 @@ public class LoginInterceptor implements HandlerInterceptor {
 		String userName = CookieUtils.getCookieValue(request, "user");
 		
 			
-		if ("".equals(userName) || null == userName ) {
-			
-			response.sendRedirect("http://localhost:8088");
-			
+		if ("".equals(userName) || null == userName ) {			
+
+			if (request.getRequestURL().toString().contains("localhost")) {
+				response.sendRedirect("http://localhost:8088");
+				
+			} else {
+				response.sendRedirect("http://106.14.188.109:8080/Social/");
+				
+			}
+
 			return false;
 		}
 			//取到用户信息，放行
@@ -31,14 +37,14 @@ public class LoginInterceptor implements HandlerInterceptor {
 		return true;
 	}
 
-	@Override
+	//@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		// handler执行之后，返回ModelAndView之前
 	}
 	
 	
-	@Override
+	//@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		// 返回ModelAndView之后。
